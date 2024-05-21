@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "899915765545",
+    "project_id": "pilltodo-1c098",
+    "storage_bucket": "pilltodo-1c098.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899915765545:android:6644a62f9509e6ba09c938",
+        "android_client_info": {
+          "package_name": "com.example.pilltodo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbB75yxdRJsLSAXni1ni7_2bNam3kqkW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
