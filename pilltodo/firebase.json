@@ -1,1 +1,35 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"pilltodo-1c098","appId":"1:899915765545:android:6644a62f9509e6ba09c938","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"pilltodo-1c098","appId":"1:899915765545:ios:c470b7228a861f4b09c938","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"pilltodo-1c098","configurations":{"android":"1:899915765545:android:6644a62f9509e6ba09c938","ios":"1:899915765545:ios:c470b7228a861f4b09c938","web":"1:899915765545:web:8b770c35351205df09c938"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "pilltodo-1c098",
+          "appId": "1:899915765545:android:6644a62f9509e6ba09c938",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "pilltodo-1c098",
+          "appId": "1:899915765545:ios:c470b7228a861f4b09c938",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "pilltodo-1c098",
+          "configurations": {
+            "android": "1:899915765545:android:6644a62f9509e6ba09c938",
+            "ios": "1:899915765545:ios:c470b7228a861f4b09c938",
+            "web": "1:899915765545:web:8b770c35351205df09c938"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "rules": "rules_version = '2';",
+    "indexes": "match /databases/{database}/documents {"
+  }
+}

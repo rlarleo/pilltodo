@@ -1,6 +1,7 @@
 {
   "projects": {
-    "main": "pilltodo-1c098"
+    "main": "pilltodo-1c098",
+    "default": "pilltodo-1c098"
   },
   "targets": {},
   "etags": {},
