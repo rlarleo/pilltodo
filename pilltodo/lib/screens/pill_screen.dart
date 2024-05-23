@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pilltodo/icons/custom_icons.dart';
+import 'package:pilltodo/widgets/check_card.dart';
 
 class PillScreen extends StatelessWidget {
   const PillScreen({super.key});
@@ -26,18 +28,10 @@ class PillScreen extends StatelessWidget {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue[200 + bottom[index] % 4 * 100],
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    alignment: Alignment.center,
-                    height: 150.0,
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 50,
-                    ),
-                    child: Text('Item: ${bottom[index]}'),
+                  return const CheckCard(
+                    pillName: 'test',
+                    icon: Custom_Icons.check_1,
+                    index: 0,
                   );
                 },
                 childCount: bottom.length,

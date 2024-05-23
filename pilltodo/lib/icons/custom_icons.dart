@@ -20,6 +20,18 @@
 ///         Author:    Dave Gandy
 ///         License:   SIL (https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt)
 ///         Homepage:  http://fortawesome.github.com/Font-Awesome/
+/// * Typicons, (c) Stephen Hutchings 2012
+///         Author:    Stephen Hutchings
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://typicons.com/
+/// * MFG Labs, Copyright (C) 2012 by Daniel Bruce
+///         Author:    MFG Labs
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://www.mfglabs.com/
+/// * Web Symbols, Copyright (c) 2011 by Just Be Nice studio. All rights reserved.
+///         Author:    Just Be Nice studio
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://www.justbenicestudio.com/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -1969,6 +1981,14 @@ class Custom_Icons {
       IconData(0xebc8, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData shopify =
       IconData(0xebc9, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData doc_add =
+      IconData(0xebca, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData ok_outline =
+      IconData(0xebcb, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData ok =
+      IconData(0xebcc, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData ok_1 =
+      IconData(0xebcd, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData glass_martini =
       IconData(0xf000, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData music =
