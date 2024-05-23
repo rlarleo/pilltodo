@@ -1,5 +1,5 @@
 name: pilltodo
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -31,13 +31,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   firebase_core: ^2.31.0
   cloud_firestore: ^4.17.3
   device_info_plus: ^10.1.0
+  animated_notch_bottom_bar: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +55,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  fonts:
+    - family: Custom_Icons
+      fonts:
+        - asset: assets/fonts/Custom_Icons.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
