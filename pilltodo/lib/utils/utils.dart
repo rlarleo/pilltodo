@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:pilltodo/provider/device_provider.dart';
+import 'package:provider/provider.dart';
 
-Future<String> checkAndInsertData() async {
+Future<void> checkAndInsertData(BuildContext context) async {
   String deviceId = await getDeviceUniqueId();
   print(deviceId);
   try {
@@ -31,7 +34,10 @@ Future<String> checkAndInsertData() async {
   } catch (e) {
     print('Error checking or inserting data: $e');
   }
-  return deviceId;
+  // Provider.of<DeviceProvider>(context, listen: false).deviceId = deviceId;
+
+  final deviceProvider = Provider.of<DeviceProvider>(context, listen: false);
+  deviceProvider.deviceId = deviceId;
 }
 
 Future<String> getDeviceUniqueId() async {

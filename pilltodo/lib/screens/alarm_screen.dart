@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:pilltodo/widgets/button.dart';
+import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/widgets/pill_card.dart';
+import 'package:provider/provider.dart';
 
 class AlarmScreen extends StatelessWidget {
   const AlarmScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
+    print(deviceId);
+
     return Scaffold(
       backgroundColor: Colors.brown,
       body: SingleChildScrollView(

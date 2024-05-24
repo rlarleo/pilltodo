@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _initializeData();
+    // checkAndInsertData();
   }
 
   @override
@@ -69,6 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    checkAndInsertData(context);
+
     final List<Widget> bottomBarPages = [
       const AlarmScreen(),
       const PillScreen(),
@@ -87,9 +89,4 @@ class _MyHomePageState extends State<MyHomePage> {
           : null,
     );
   }
-}
-
-Future<String> _initializeData() async {
-  String deviceId = await checkAndInsertData();
-  return deviceId;
 }
