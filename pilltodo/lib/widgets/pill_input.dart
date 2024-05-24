@@ -51,9 +51,9 @@ class _PillInputFormState extends State<PillInputForm> {
     _isNext = widget.isNext;
   }
 
-  void onTimeChanged2(Time newTime) {
+  void addTime(Time newTime) {
     setState(() {
-      _time = newTime;
+      _times.add(newTime); // 새로운 시간 추가
     });
   }
 
@@ -80,81 +80,100 @@ class _PillInputFormState extends State<PillInputForm> {
     );
   }
 
+  String _getFormattedTime(int hour, int minute) {
+    String period = 'AM';
+    if (hour >= 12) {
+      period = 'PM';
+      if (hour > 12) hour -= 12;
+    }
+    return '$hour:${minute.toString().padLeft(2, '0')} $period';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: _isNext
           ? <Widget>[
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    const Text(
-                      '언제 알려드릴까요?',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
+              SizedBox(
+                height: 500,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      const Text(
+                        '언제 알려드릴까요?',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    TextField(
-                      controller: _pillNameController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: '약 이름을 입력해주세요.',
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _times.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: Colors.black45,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16.0),
+                                      ),
+                                      onPressed: () => showTimePicker(index),
+                                      child: Text(
+                                        _getFormattedTime(_times[index].hour,
+                                            _times[index].minute),
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      setState(() {
+                                        _times.removeAt(index);
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 500, // 또는 원하는 높이
-                      child: ListView.builder(
-                        itemCount: _times.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                backgroundColor: Colors.black45,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16.0),
-                              ),
-                              onPressed: () => showTimePicker(index),
-                              child: Text(
-                                "Open time picker for ${_times[index].hour}:${_times[index].minute}",
-                                style: const TextStyle(color: Colors.white),
-                              ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.black45),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            showPicker(
+                              iosStylePicker: true,
+                              context: context,
+                              value: _time,
+                              sunrise: const TimeOfDay(
+                                  hour: 6, minute: 0), // optional
+                              sunset: const TimeOfDay(
+                                  hour: 18, minute: 0), // optional
+                              duskSpanInMinutes: 120, // optional
+                              onChange: addTime,
                             ),
                           );
                         },
+                        child: const Text(
+                          "시간 추가",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                    ),
-                    TextButton(
-                      style:
-                          TextButton.styleFrom(backgroundColor: Colors.black45),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          showPicker(
-                            iosStylePicker: true,
-                            context: context,
-                            value: _time,
-                            sunrise:
-                                const TimeOfDay(hour: 6, minute: 0), // optional
-                            sunset: const TimeOfDay(
-                                hour: 18, minute: 0), // optional
-                            duskSpanInMinutes: 120, // optional
-                            onChange: onTimeChanged2,
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        "Open time picker",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ]
