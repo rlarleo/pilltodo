@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pilltodo/provider/device_provider.dart';
+import 'package:pilltodo/widgets/add_card.dart';
 import 'package:pilltodo/widgets/pill_card.dart';
 import 'package:provider/provider.dart';
 
@@ -110,9 +111,9 @@ class AlarmScreen extends StatelessWidget {
                 isInverted: true,
                 index: 1,
               ),
-              const PillCard(
+              const AddCard(
                 pillName: 'test',
-                icon: Icons.notifications_active_outlined,
+                icon: Icons.add_circle_outline_rounded,
                 isInverted: false,
                 index: 2,
               ),
