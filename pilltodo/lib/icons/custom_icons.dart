@@ -1983,7 +1983,7 @@ class Custom_Icons {
       IconData(0xebc9, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData doc_add =
       IconData(0xebca, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData ok_outline =
+  static const IconData okOutline =
       IconData(0xebcb, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData ok =
       IconData(0xebcc, fontFamily: _kFontFam, fontPackage: _kFontPkg);

@@ -100,19 +100,19 @@ class AlarmScreen extends StatelessWidget {
               ),
               const PillCard(
                 pillName: 'test',
-                icon: Icons.euro_rounded,
+                icon: Icons.notifications_active_outlined,
                 isInverted: false,
                 index: 0,
               ),
               const PillCard(
                 pillName: 'test',
-                icon: Icons.euro_rounded,
+                icon: Icons.notifications_off_outlined,
                 isInverted: true,
                 index: 1,
               ),
               const PillCard(
                 pillName: 'test',
-                icon: Icons.euro_rounded,
+                icon: Icons.notifications_active_outlined,
                 isInverted: false,
                 index: 2,
               ),
