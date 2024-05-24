@@ -33,7 +33,7 @@ class AlarmScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        'Hey, Selena',
+                        'Hey, Ki Dae',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 28,
@@ -65,7 +65,7 @@ class AlarmScreen extends StatelessWidget {
                 height: 5,
               ),
               const Text(
-                '\$5 194 482',
+                '1234',
                 style: TextStyle(
                   fontSize: 48,
                   fontWeight: FontWeight.w600,
@@ -80,7 +80,7 @@ class AlarmScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Wallets',
+                    'Pills',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 36,

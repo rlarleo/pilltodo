@@ -17,12 +17,12 @@ class PillCard extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
-  _PillCardState createState() => _PillCardState();
+  State<PillCard> createState() => _PillCardState();
 }
 
 class _PillCardState extends State<PillCard> {
   bool _isPressed = false;
+  bool _isNext = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +53,16 @@ class _PillCardState extends State<PillCard> {
               headerAnimationLoop: false,
               dialogType: DialogType.success,
               showCloseIcon: true,
-              body: const PillInputForm(),
-              btnOkOnPress: () {
-                debugPrint('OnClick');
-              },
-              btnOkIcon: Icons.check_circle,
+              body: PillInputForm(
+                isNext: _isNext,
+                onChanged: (bool newValue) {
+                  setState(() {
+                    _isNext = newValue;
+                  });
+                },
+              ),
               onDismissCallback: (type) {
+                _isNext = false;
                 debugPrint('Dialog Dismiss from callback $type');
               },
             ).show();
