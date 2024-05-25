@@ -17,10 +17,10 @@ class AddCard extends StatefulWidget {
   });
 
   @override
-  State<AddCard> createState() => _PillCardState();
+  State<AddCard> createState() => _AddCardState();
 }
 
-class _PillCardState extends State<AddCard> {
+class _AddCardState extends State<AddCard> {
   bool _isPressed = false;
   bool _isNext = false;
 

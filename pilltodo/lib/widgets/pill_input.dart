@@ -24,7 +24,7 @@ class _PillInputFormState extends State<PillInputForm> {
   late bool _isNext;
   final DateFormat _dateFormat = DateFormat('yyyy.MM.dd');
   final List<bool> _selectedDays = [true, true, true, true, true, true, true];
-  Time _time = Time(hour: 11, minute: 30, second: 20);
+  final Time _time = Time(hour: 11, minute: 30, second: 20);
   final List<Time> _times = [
     Time(hour: 11, minute: 30, second: 20),
     Time(hour: 11, minute: 30, second: 20),
@@ -169,6 +169,15 @@ class _PillInputFormState extends State<PillInputForm> {
                         },
                         child: const Text(
                           "시간 추가",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.black45),
+                        onPressed: () {},
+                        child: const Text(
+                          "등록 하기",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
