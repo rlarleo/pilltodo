@@ -1,19 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/widgets/button.dart';
+import 'package:provider/provider.dart';
 
 class PillInputForm extends StatefulWidget {
   final bool isNext;
   final ValueChanged<bool> onChanged;
-  final BuildContext parentContext;
+  final String? deviceId;
 
   const PillInputForm({
     super.key,
     required this.isNext,
     required this.onChanged,
-    required this.parentContext,
+    required this.deviceId,
   });
 
   @override
@@ -26,13 +29,13 @@ class _PillInputFormState extends State<PillInputForm> {
   late bool _isNext;
   final DateFormat _dateFormat = DateFormat('yyyy.MM.dd');
   final List<bool> _selectedDays = [true, true, true, true, true, true, true];
-  final Time _time = Time(hour: 11, minute: 30, second: 20);
+  final Time _time = Time(hour: 11, minute: 30);
   final List<Time> _times = [
-    Time(hour: 11, minute: 30, second: 20),
-    Time(hour: 11, minute: 30, second: 20),
-    Time(hour: 11, minute: 30, second: 20),
-    Time(hour: 11, minute: 30, second: 20),
-    Time(hour: 11, minute: 30, second: 20),
+    Time(hour: 11, minute: 30),
+    Time(hour: 11, minute: 30),
+    Time(hour: 11, minute: 30),
+    Time(hour: 11, minute: 30),
+    Time(hour: 11, minute: 30),
   ];
   bool iosStyle = true;
 
@@ -89,6 +92,64 @@ class _PillInputFormState extends State<PillInputForm> {
       if (hour > 12) hour -= 12;
     }
     return '$hour:${minute.toString().padLeft(2, '0')} $period';
+  }
+
+  Future<void> _updatePillsForUser(String? deviceId) async {
+    try {
+      String pillName = _pillNameController.text;
+      _times; // 시간 배열 ex) [Time(hour: 11, minute: 30), Time(hour: 12, minute: 30)]
+      _selectedDays; // 선택된 요일 배열 ex) [true, true, true, true, true, true, true]
+      _startDate;
+      _endDate;
+      List<DateTime> dateTimes = [];
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      DocumentReference userRef = firestore.collection('user').doc(deviceId);
+      DocumentSnapshot userSnapshot = await userRef.get();
+
+      // 기존 pills 데이터 가져오기
+      Map<String, dynamic>? userData =
+          userSnapshot.data() as Map<String, dynamic>?;
+
+      // _startDate ~ _endDate 범위 내의 모든 날짜를 확인하고 선택된 요일에 해당하는 날짜에 시간 데이터를 저장합니다.
+      DateTime currentDate = _startDate;
+      while (currentDate.isBefore(_endDate) ||
+          currentDate.isAtSameMomentAs(_endDate)) {
+        if (_selectedDays[currentDate.weekday - 1]) {
+          // 선택된 요일에 해당하는 날짜인 경우 데이터를 Firestore에 저장
+          for (var time in _times) {
+            DateTime combinedDateTime = DateTime(currentDate.year,
+                currentDate.month, currentDate.day, time.hour, time.minute);
+            dateTimes.add(combinedDateTime);
+          }
+        }
+
+        // 다음 날짜로 이동
+        currentDate = currentDate.add(const Duration(days: 1));
+      }
+
+      // 새로운 약 데이터 추가
+      Map<String, dynamic> newPill = {
+        'name': pillName,
+        'dateTimes': dateTimes,
+      };
+
+      // 기존 pills 데이터가 있는지 확인하고 새로운 약 데이터를 추가
+      List<dynamic> updatedPills = [];
+      if (userData != null &&
+          userData.containsKey('pills') &&
+          userData['pills'] is List<dynamic>) {
+        updatedPills = [...userData['pills'], newPill];
+      } else {
+        updatedPills = [newPill];
+      }
+
+      // 사용자 문서 업데이트
+      await userRef.update({'pills': updatedPills});
+    } catch (e) {
+      // 오류 처리
+      print('Error updating pills for user: $e');
+    }
   }
 
   @override
@@ -178,6 +239,7 @@ class _PillInputFormState extends State<PillInputForm> {
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.black45),
                         onPressed: () {
+                          _updatePillsForUser(widget.deviceId);
                           Navigator.of(context).pop();
                         },
                         child: const Text(

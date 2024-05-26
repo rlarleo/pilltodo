@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/pill_input.dart';
+import 'package:provider/provider.dart';
 
 class AddCard extends StatefulWidget {
   final String pillName;
@@ -26,6 +28,8 @@ class _AddCardState extends State<AddCard> {
   bool _isNext = false;
   @override
   Widget build(BuildContext context) {
+    String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
+
     return Transform.scale(
       scale: _isPressed ? 1.05 : 1,
       child: Transform.translate(
@@ -60,7 +64,7 @@ class _AddCardState extends State<AddCard> {
                       _isNext = newValue;
                     });
                   },
-                  parentContext: context),
+                  deviceId: deviceId),
               btnOkOnPress: getOkButtonPressHandler(_isNext),
               btnOkIcon: getOkButtonIcon(_isNext),
               onDismissCallback: (type) {
