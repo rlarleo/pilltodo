@@ -7,11 +7,13 @@ import 'package:pilltodo/widgets/button.dart';
 class PillInputForm extends StatefulWidget {
   final bool isNext;
   final ValueChanged<bool> onChanged;
+  final BuildContext parentContext;
 
   const PillInputForm({
     super.key,
     required this.isNext,
     required this.onChanged,
+    required this.parentContext,
   });
 
   @override
@@ -175,7 +177,9 @@ class _PillInputFormState extends State<PillInputForm> {
                       TextButton(
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.black45),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                         child: const Text(
                           "등록 하기",
                           style: TextStyle(color: Colors.white),

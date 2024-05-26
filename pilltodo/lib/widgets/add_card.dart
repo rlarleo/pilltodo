@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/pill_input.dart';
 
 class AddCard extends StatefulWidget {
@@ -23,7 +24,6 @@ class AddCard extends StatefulWidget {
 class _AddCardState extends State<AddCard> {
   bool _isPressed = false;
   bool _isNext = false;
-
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
@@ -54,19 +54,15 @@ class _AddCardState extends State<AddCard> {
               dialogType: DialogType.success,
               showCloseIcon: true,
               body: PillInputForm(
-                isNext: _isNext,
-                onChanged: (bool newValue) {
-                  setState(() {
-                    _isNext = newValue;
-                  });
-                },
-              ),
-              btnOkOnPress: !_isNext
-                  ? null
-                  : () {
-                      debugPrint('OnClick');
-                    },
-              btnOkIcon: !_isNext ? null : Icons.check_circle,
+                  isNext: _isNext,
+                  onChanged: (bool newValue) {
+                    setState(() {
+                      _isNext = newValue;
+                    });
+                  },
+                  parentContext: context),
+              btnOkOnPress: getOkButtonPressHandler(_isNext),
+              btnOkIcon: getOkButtonIcon(_isNext),
               onDismissCallback: (type) {
                 _isNext = false;
                 debugPrint('Dialog Dismiss from callback $type');

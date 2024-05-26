@@ -54,13 +54,13 @@ class _PillCardState extends State<PillCard> {
               dialogType: DialogType.success,
               showCloseIcon: true,
               body: PillInputForm(
-                isNext: _isNext,
-                onChanged: (bool newValue) {
-                  setState(() {
-                    _isNext = newValue;
-                  });
-                },
-              ),
+                  isNext: _isNext,
+                  onChanged: (bool newValue) {
+                    setState(() {
+                      _isNext = newValue;
+                    });
+                  },
+                  parentContext: context),
               onDismissCallback: (type) {
                 _isNext = false;
                 debugPrint('Dialog Dismiss from callback $type');

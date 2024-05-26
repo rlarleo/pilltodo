@@ -64,3 +64,15 @@ Future<String> getDeviceUniqueId() async {
 
   return deviceIdentifier;
 }
+
+void handleOkButtonPress() {
+  debugPrint('OnClick');
+}
+
+IconData? getOkButtonIcon(bool isNext) {
+  return isNext ? Icons.check_circle : null;
+}
+
+VoidCallback? getOkButtonPressHandler(bool isNext) {
+  return isNext ? handleOkButtonPress : null;
+}
