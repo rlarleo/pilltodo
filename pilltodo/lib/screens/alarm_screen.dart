@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
+import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/add_card.dart';
 import 'package:pilltodo/widgets/pill_card.dart';
 import 'package:provider/provider.dart';
 
-class AlarmScreen extends StatelessWidget {
+class AlarmScreen extends StatefulWidget {
   const AlarmScreen({super.key});
+
+  @override
+  State<AlarmScreen> createState() => _AlarmScreenState();
+}
+
+class _AlarmScreenState extends State<AlarmScreen> {
+  Future<List<Pill>>? _pillsFuture;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _pillsFuture = getPills(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,26 +111,49 @@ class AlarmScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              const PillCard(
-                pillName: 'test',
-                icon: Icons.notifications_active_outlined,
-                isInverted: false,
-                index: 0,
-              ),
-              const PillCard(
-                pillName: 'test',
-                icon: Icons.notifications_off_outlined,
-                isInverted: true,
-                index: 1,
-              ),
-              const AddCard(
-                pillName: 'test',
-                icon: Icons.add_circle_outline_rounded,
-                isInverted: false,
-                index: 2,
+              FutureBuilder<List<Pill>>(
+                future: _pillsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    final pillData = snapshot.data ?? [];
+
+                    // AddCard는 고정된 위치에 추가
+                    pillData.add(Pill(
+                        name: '_addCard',
+                        dateTimes: [],
+                        startDate: DateTime.now(),
+                        endDate: DateTime.now()));
+
+                    return ListView.builder(
+                      shrinkWrap: true, // ScrollView 안에 ListView를 사용할 때 필요
+                      physics:
+                          const NeverScrollableScrollPhysics(), // 내부 스크롤 비활성화
+                      itemCount: pillData.length,
+                      itemBuilder: (context, index) {
+                        final pill = pillData[index];
+                        if (pill.name == '_addCard') {
+                          return AddCard(
+                            pillName: 'test',
+                            icon: Icons.add_circle_outline_rounded,
+                            isInverted: index % 2 == 0,
+                            index: index.toDouble(),
+                          );
+                        } else {
+                          return PillCard(
+                            pillName: pill.name,
+                            icon: Icons.notifications_off_outlined,
+                            isInverted: index % 2 == 0,
+                            index: index.toDouble(),
+                          );
+                        }
+                      },
+                    );
+                  }
+                },
               ),
               const SizedBox(
                 height: 100,
@@ -126,10 +164,4 @@ class AlarmScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: AlarmScreen(),
-  ));
 }

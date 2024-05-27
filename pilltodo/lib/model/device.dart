@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:day_night_time_picker/lib/state/time.dart';
 
 class Device {
   String? deviceId;
@@ -8,6 +9,46 @@ class Device {
   factory Device.fromJson(Map<String, dynamic> json) {
     return Device(deviceId: json['deviceId']);
   }
+}
+
+class FirebaseTime {
+  final int hour;
+  final int minute;
+
+  FirebaseTime({required this.hour, required this.minute});
+
+  // FirebaseTime 객체를 Map<String, dynamic>으로 변환하는 함수
+  Map<String, dynamic> toMap() {
+    return {
+      'hour': hour,
+      'minute': minute,
+    };
+  }
+
+  // Map<String, dynamic>을 FirebaseTime 객체로 변환하는 함수
+  factory FirebaseTime.fromMap(Map<String, dynamic> map) {
+    return FirebaseTime(
+      hour: map['hour'] as int,
+      minute: map['minute'] as int,
+    );
+  }
+}
+
+// FirebaseTime 객체 리스트를 Map 리스트로 변환하는 함수
+List<Map<String, dynamic>> timesToMapList(List<Time> times) {
+  return times.map((time) => timeToFirebaseTime(time).toMap()).toList();
+}
+
+FirebaseTime timeToFirebaseTime(Time time) {
+  return FirebaseTime(
+    hour: time.hour,
+    minute: time.minute,
+  );
+}
+
+// Map 리스트를 FirebaseTime 객체 리스트로 변환하는 함수
+List<FirebaseTime> mapListToTimes(List<Map<String, dynamic>> mapList) {
+  return mapList.map((map) => FirebaseTime.fromMap(map)).toList();
 }
 
 class DateTimeCheck {

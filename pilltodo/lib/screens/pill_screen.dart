@@ -6,6 +6,7 @@ import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/widgets/check_card.dart';
 import 'package:provider/provider.dart';
+import 'package:pilltodo/utils/utils.dart';
 
 class PillScreen extends StatefulWidget {
   const PillScreen({super.key});
@@ -20,52 +21,7 @@ class _PillScreenState extends State<PillScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _pillsFuture = _getPills();
-  }
-
-  Future<List<DateTimeCheck>> _getPills() async {
-    String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
-    if (deviceId != null) {
-      print("@@@@@@@@@@@");
-      print(deviceId);
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      DocumentReference userRef = firestore.collection('user').doc(deviceId);
-      DocumentSnapshot userSnapshot = await userRef.get();
-
-      // 기존 pills 데이터 가져오기
-      Map<String, dynamic>? userData =
-          userSnapshot.data() as Map<String, dynamic>?;
-      if (userData != null &&
-          userData.containsKey('pills') &&
-          userData['pills'] is List<dynamic>) {
-        List<dynamic> pillDataList = userData['pills'];
-        List<DateTimeCheck> allDateTimeChecks = [];
-
-        // 캘린더의 데이터가 보여야함
-        DateTime today = DateTime.now();
-
-        DateTime todayStart = DateTime(today.year, today.month, today.day);
-        DateTime todayEnd = todayStart
-            .add(const Duration(days: 1))
-            .subtract(const Duration(milliseconds: 1));
-
-        for (var pillData in pillDataList) {
-          var pill = Pill.fromMap(pillData as Map<String, dynamic>);
-          if (today.isAfter(pill.startDate) && today.isBefore(pill.endDate)) {
-            for (var dateTimeCheck in pill.dateTimes) {
-              if (dateTimeCheck.dateTime.isAfter(todayStart) &&
-                  dateTimeCheck.dateTime.isBefore(todayEnd)) {
-                dateTimeCheck.name = pill.name;
-                allDateTimeChecks.add(dateTimeCheck);
-              }
-            }
-          }
-        }
-        return allDateTimeChecks;
-      }
-    }
-
-    return []; // 데이터가 없는 경우 빈 리스트 반환
+    _pillsFuture = getAlarms(context);
   }
 
   Future<void> _updateCheckedStatus(

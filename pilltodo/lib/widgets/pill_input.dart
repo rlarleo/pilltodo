@@ -3,10 +3,7 @@ import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:pilltodo/model/device.dart';
-import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/widgets/button.dart';
-import 'package:provider/provider.dart';
 
 class PillInputForm extends StatefulWidget {
   final bool isNext;
@@ -136,7 +133,7 @@ class _PillInputFormState extends State<PillInputForm> {
         'name': pillName,
         'dateTimes': dateTimes,
         'startDate': _startDate,
-        'endDate': _endDate
+        'endDate': _endDate,
       };
 
       // 기존 pills 데이터가 있는지 확인하고 새로운 약 데이터를 추가

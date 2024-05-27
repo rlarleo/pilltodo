@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final List<Widget> bottomBarPages = [
       const AlarmScreen(),
-      PillScreen(),
+      const PillScreen(),
       const SettingScreen(),
     ];
     return Scaffold(
