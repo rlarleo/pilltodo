@@ -3,6 +3,7 @@ import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/widgets/button.dart';
 import 'package:provider/provider.dart';
@@ -31,11 +32,9 @@ class _PillInputFormState extends State<PillInputForm> {
   final List<bool> _selectedDays = [true, true, true, true, true, true, true];
   final Time _time = Time(hour: 11, minute: 30);
   final List<Time> _times = [
-    Time(hour: 11, minute: 30),
-    Time(hour: 11, minute: 30),
-    Time(hour: 11, minute: 30),
-    Time(hour: 11, minute: 30),
-    Time(hour: 11, minute: 30),
+    Time(hour: 9, minute: 00),
+    Time(hour: 12, minute: 00),
+    Time(hour: 18, minute: 00),
   ];
   bool iosStyle = true;
 
@@ -52,7 +51,7 @@ class _PillInputFormState extends State<PillInputForm> {
     super.initState();
     _startDate = DateTime.now();
     _endDate = DateTime.now()
-        .add(const Duration(days: 7)); // Default end date: 7 days from now
+        .add(const Duration(days: 2)); // Default end date: 7 days from now
     _isNext = widget.isNext;
   }
 
@@ -101,7 +100,6 @@ class _PillInputFormState extends State<PillInputForm> {
       _selectedDays; // 선택된 요일 배열 ex) [true, true, true, true, true, true, true]
       _startDate;
       _endDate;
-      List<DateTime> dateTimes = [];
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
       DocumentReference userRef = firestore.collection('user').doc(deviceId);
@@ -112,6 +110,7 @@ class _PillInputFormState extends State<PillInputForm> {
           userSnapshot.data() as Map<String, dynamic>?;
 
       // _startDate ~ _endDate 범위 내의 모든 날짜를 확인하고 선택된 요일에 해당하는 날짜에 시간 데이터를 저장합니다.
+      List<Map<String, dynamic>> dateTimes = [];
       DateTime currentDate = _startDate;
       while (currentDate.isBefore(_endDate) ||
           currentDate.isAtSameMomentAs(_endDate)) {
@@ -120,7 +119,11 @@ class _PillInputFormState extends State<PillInputForm> {
           for (var time in _times) {
             DateTime combinedDateTime = DateTime(currentDate.year,
                 currentDate.month, currentDate.day, time.hour, time.minute);
-            dateTimes.add(combinedDateTime);
+            Map<String, dynamic> data = {
+              'dateTime': combinedDateTime,
+              'checked': false,
+            };
+            dateTimes.add(data);
           }
         }
 
@@ -132,6 +135,8 @@ class _PillInputFormState extends State<PillInputForm> {
       Map<String, dynamic> newPill = {
         'name': pillName,
         'dateTimes': dateTimes,
+        'startDate': _startDate,
+        'endDate': _endDate
       };
 
       // 기존 pills 데이터가 있는지 확인하고 새로운 약 데이터를 추가
