@@ -116,13 +116,30 @@ class _PillScreenState extends State<PillScreen> {
     }
   }
 
+  var slivers = SliverToBoxAdapter(
+    child: Container(
+      height: 200,
+      color: Colors.brown,
+      alignment: Alignment.center,
+      child: const Text(
+        'Calender',
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<DateTimeCheck>>(
         future: _pillsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return Scaffold(
+              body: Container(
+                color: const Color.fromARGB(255, 221, 186, 173),
+                child: CustomScrollView(slivers: <Widget>[slivers]),
+              ),
+            );
           } else {
             List<DateTimeCheck> pills = snapshot.data ?? [];
             return _buildPillList(pills);
@@ -138,17 +155,7 @@ class _PillScreenState extends State<PillScreen> {
         color: const Color.fromARGB(255, 221, 186, 173),
         child: CustomScrollView(
           slivers: <Widget>[
-            SliverToBoxAdapter(
-              child: Container(
-                height: 200,
-                color: Colors.brown,
-                alignment: Alignment.center,
-                child: const Text(
-                  'Calender',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ),
-            ),
+            slivers,
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
