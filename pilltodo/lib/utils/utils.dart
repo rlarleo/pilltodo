@@ -9,7 +9,8 @@ import 'package:pilltodo/provider/device_provider.dart';
 import 'package:provider/provider.dart';
 
 Future<List<Pill>> getPills(BuildContext context) async {
-  String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
+  String? deviceId =
+      Provider.of<DeviceProvider>(context, listen: false).deviceId;
   if (deviceId != null) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     DocumentReference userRef = firestore.collection('user').doc(deviceId);

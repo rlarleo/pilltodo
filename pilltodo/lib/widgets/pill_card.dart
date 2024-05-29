@@ -9,6 +9,7 @@ class PillCard extends StatefulWidget {
   final IconData icon;
   final bool isInverted;
   final double index;
+  final Future<void> Function() onRefresh;
 
   const PillCard({
     super.key,
@@ -16,6 +17,7 @@ class PillCard extends StatefulWidget {
     required this.icon,
     required this.isInverted,
     required this.index,
+    required this.onRefresh,
   });
 
   @override
@@ -58,13 +60,15 @@ class _PillCardState extends State<PillCard> {
               dialogType: DialogType.success,
               showCloseIcon: true,
               body: PillInputForm(
-                  isNext: _isNext,
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      _isNext = newValue;
-                    });
-                  },
-                  deviceId: deviceId),
+                isNext: _isNext,
+                onChanged: (bool newValue) {
+                  setState(() {
+                    _isNext = newValue;
+                  });
+                },
+                onRefresh: widget.onRefresh,
+                deviceId: deviceId,
+              ),
               onDismissCallback: (type) {
                 _isNext = false;
                 debugPrint('Dialog Dismiss from callback $type');

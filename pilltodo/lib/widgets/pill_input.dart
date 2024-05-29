@@ -9,12 +9,14 @@ class PillInputForm extends StatefulWidget {
   final bool isNext;
   final ValueChanged<bool> onChanged;
   final String? deviceId;
+  final Future<void> Function() onRefresh;
 
   const PillInputForm({
     super.key,
     required this.isNext,
     required this.onChanged,
     required this.deviceId,
+    required this.onRefresh,
   });
 
   @override
@@ -154,6 +156,12 @@ class _PillInputFormState extends State<PillInputForm> {
     }
   }
 
+  Future<void> _updateData() async {
+    await _updatePillsForUser(widget.deviceId); // 비동기 함수 호출
+    await widget.onRefresh(); // 업데이트 후 리프레시 콜백 호출
+    Navigator.of(context).pop(); // 모달 닫기
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -240,10 +248,7 @@ class _PillInputFormState extends State<PillInputForm> {
                       TextButton(
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.black45),
-                        onPressed: () {
-                          _updatePillsForUser(widget.deviceId);
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: _updateData,
                         child: const Text(
                           "등록 하기",
                           style: TextStyle(color: Colors.white),

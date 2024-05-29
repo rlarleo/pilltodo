@@ -10,6 +10,7 @@ class AddCard extends StatefulWidget {
   final IconData icon;
   final bool isInverted;
   final double index;
+  final Future<void> Function() onRefresh;
 
   const AddCard({
     super.key,
@@ -17,6 +18,7 @@ class AddCard extends StatefulWidget {
     required this.icon,
     required this.isInverted,
     required this.index,
+    required this.onRefresh,
   });
 
   @override
@@ -64,6 +66,7 @@ class _AddCardState extends State<AddCard> {
                     _isNext = newValue;
                   });
                 },
+                onRefresh: widget.onRefresh,
                 deviceId: deviceId,
               ),
               btnOkOnPress: getOkButtonPressHandler(_isNext),

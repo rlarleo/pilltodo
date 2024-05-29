@@ -22,6 +22,13 @@ class _AlarmScreenState extends State<AlarmScreen> {
     _pillsFuture = getPills(context);
   }
 
+  Future<void> _refreshPills(BuildContext context) async {
+    setState(() {
+      _pillsFuture = getPills(context);
+    });
+    print('refersh');
+  }
+
   @override
   Widget build(BuildContext context) {
     String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
@@ -141,6 +148,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                             icon: Icons.add_circle_outline_rounded,
                             isInverted: index % 2 == 0,
                             index: index.toDouble(),
+                            onRefresh: () => _refreshPills(context),
                           );
                         } else {
                           return PillCard(
@@ -148,12 +156,24 @@ class _AlarmScreenState extends State<AlarmScreen> {
                             icon: Icons.notifications_off_outlined,
                             isInverted: index % 2 == 0,
                             index: index.toDouble(),
+                            onRefresh: () => _refreshPills(context),
                           );
                         }
                       },
                     );
                   }
                 },
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.black45,
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                ),
+                onPressed: () => _refreshPills(context),
+                child: const Text(
+                  'test',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               const SizedBox(
                 height: 100,
