@@ -51,12 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int maxCount = 3;
 
   @override
-  void initState() {
-    super.initState();
-    // checkAndInsertData();
-  }
-
-  @override
   void dispose() {
     _pageController.dispose();
 

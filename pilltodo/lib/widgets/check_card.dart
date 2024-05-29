@@ -21,7 +21,7 @@ class CheckCard extends StatelessWidget {
     return InkWell(
         onTap: onPressed, // 추가: 카드를 눌렀을 때 onPressed 콜백 호출
         child: Transform.translate(
-          offset: Offset(0, -30 * index),
+          offset: Offset(0, -0 * index),
           child: Container(
             margin: const EdgeInsets.only(
               top: 10.0,

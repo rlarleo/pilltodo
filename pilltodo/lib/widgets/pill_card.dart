@@ -33,7 +33,7 @@ class _PillCardState extends State<PillCard> {
     return Transform.scale(
       scale: _isPressed ? 1.05 : 1,
       child: Transform.translate(
-        offset: Offset(0, -30 * widget.index),
+        offset: Offset(0, -0 * widget.index),
         child: InkWell(
           onTapDown: (_) {
             setState(() {

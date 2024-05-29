@@ -33,7 +33,7 @@ class _AddCardState extends State<AddCard> {
     return Transform.scale(
       scale: _isPressed ? 1.05 : 1,
       child: Transform.translate(
-        offset: Offset(0, -30 * widget.index),
+        offset: Offset(0, -0 * widget.index),
         child: InkWell(
           onTapDown: (_) {
             setState(() {
@@ -58,13 +58,14 @@ class _AddCardState extends State<AddCard> {
               dialogType: DialogType.success,
               showCloseIcon: true,
               body: PillInputForm(
-                  isNext: _isNext,
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      _isNext = newValue;
-                    });
-                  },
-                  deviceId: deviceId),
+                isNext: _isNext,
+                onChanged: (bool newValue) {
+                  setState(() {
+                    _isNext = newValue;
+                  });
+                },
+                deviceId: deviceId,
+              ),
               btnOkOnPress: getOkButtonPressHandler(_isNext),
               btnOkIcon: getOkButtonIcon(_isNext),
               onDismissCallback: (type) {
