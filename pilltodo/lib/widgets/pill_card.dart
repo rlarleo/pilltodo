@@ -70,6 +70,7 @@ class _PillCardState extends State<PillCard> {
                 onRefresh: widget.onRefresh,
                 deviceId: deviceId,
                 pill: widget.pill,
+                inputType: 'Modify',
               ),
               onDismissCallback: (type) {
                 _isNext = false;

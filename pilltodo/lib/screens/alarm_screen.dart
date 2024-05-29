@@ -170,17 +170,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
                   }
                 },
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.black45,
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                ),
-                onPressed: () => _refreshPills(context),
-                child: const Text(
-                  'test',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
               const SizedBox(
                 height: 100,
               ),

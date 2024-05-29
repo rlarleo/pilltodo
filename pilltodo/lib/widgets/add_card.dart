@@ -69,6 +69,7 @@ class _AddCardState extends State<AddCard> {
                 onRefresh: widget.onRefresh,
                 deviceId: deviceId,
                 pill: null,
+                inputType: 'Add',
               ),
               btnOkOnPress: getOkButtonPressHandler(_isNext),
               btnOkIcon: getOkButtonIcon(_isNext),

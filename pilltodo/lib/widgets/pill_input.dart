@@ -12,6 +12,7 @@ class PillInputForm extends StatefulWidget {
   final String? deviceId;
   final Future<void> Function() onRefresh;
   final Pill? pill;
+  final String inputType;
 
   const PillInputForm({
     super.key,
@@ -20,6 +21,7 @@ class PillInputForm extends StatefulWidget {
     required this.deviceId,
     required this.onRefresh,
     required this.pill,
+    required this.inputType,
   });
 
   @override
@@ -272,9 +274,9 @@ class _PillInputFormState extends State<PillInputForm> {
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.black45),
                         onPressed: _updateData,
-                        child: const Text(
-                          "등록 하기",
-                          style: TextStyle(color: Colors.white),
+                        child: Text(
+                          widget.inputType == 'Add' ? "등록 하기" : "수정 하기",
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ],
