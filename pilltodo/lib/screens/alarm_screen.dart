@@ -1,3 +1,4 @@
+import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:flutter/material.dart';
 import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
@@ -129,11 +130,16 @@ class _AlarmScreenState extends State<AlarmScreen> {
                     final pillData = snapshot.data ?? [];
 
                     // AddCard는 고정된 위치에 추가
-                    pillData.add(Pill(
+                    pillData.add(
+                      Pill(
                         name: '_addCard',
                         dateTimes: [],
                         startDate: DateTime.now(),
-                        endDate: DateTime.now()));
+                        endDate: DateTime.now(),
+                        selectedDays: [],
+                        times: [],
+                      ),
+                    );
 
                     return ListView.builder(
                       shrinkWrap: true, // ScrollView 안에 ListView를 사용할 때 필요
@@ -152,7 +158,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                           );
                         } else {
                           return PillCard(
-                            pillName: pill.name,
+                            pill: pill,
                             icon: Icons.notifications_off_outlined,
                             isInverted: index % 2 == 0,
                             index: index.toDouble(),

@@ -78,12 +78,16 @@ class Pill {
   final List<DateTimeCheck> dateTimes;
   final DateTime startDate;
   final DateTime endDate;
+  final List<bool> selectedDays;
+  final List<Time> times;
 
   Pill({
     required this.name,
     required this.dateTimes,
     required this.startDate,
     required this.endDate,
+    required this.selectedDays,
+    required this.times,
   });
 
   factory Pill.fromMap(Map<String, dynamic> map) {
@@ -94,6 +98,19 @@ class Pill {
           .toList(),
       startDate: (map['startDate'] as Timestamp).toDate(),
       endDate: (map['endDate'] as Timestamp).toDate(),
+      selectedDays: (map['selectedDays'].cast<bool>() ??
+          [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+          ]),
+      times: (map['times'] as List)
+          .map((dt) => Time(hour: dt['hour'], minute: dt['minute']))
+          .toList(),
     );
   }
 

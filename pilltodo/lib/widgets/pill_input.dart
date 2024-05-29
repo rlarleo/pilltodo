@@ -3,6 +3,7 @@ import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/widgets/button.dart';
 
 class PillInputForm extends StatefulWidget {
@@ -10,6 +11,7 @@ class PillInputForm extends StatefulWidget {
   final ValueChanged<bool> onChanged;
   final String? deviceId;
   final Future<void> Function() onRefresh;
+  final Pill? pill;
 
   const PillInputForm({
     super.key,
@@ -17,6 +19,7 @@ class PillInputForm extends StatefulWidget {
     required this.onChanged,
     required this.deviceId,
     required this.onRefresh,
+    required this.pill,
   });
 
   @override
@@ -28,16 +31,16 @@ class _PillInputFormState extends State<PillInputForm> {
   late DateTime _endDate;
   late bool _isNext;
   final DateFormat _dateFormat = DateFormat('yyyy.MM.dd');
-  final List<bool> _selectedDays = [true, true, true, true, true, true, true];
   final Time _time = Time(hour: 11, minute: 30);
-  final List<Time> _times = [
+  List<bool> _selectedDays = [true, true, true, true, true, true, true];
+  List<Time> _times = [
     Time(hour: 9, minute: 00),
     Time(hour: 12, minute: 00),
     Time(hour: 18, minute: 00),
   ];
   bool iosStyle = true;
 
-  final TextEditingController _pillNameController = TextEditingController();
+  TextEditingController _pillNameController = TextEditingController();
 
   @override
   void dispose() {
@@ -52,6 +55,22 @@ class _PillInputFormState extends State<PillInputForm> {
     _endDate = DateTime.now()
         .add(const Duration(days: 2)); // Default end date: 7 days from now
     _isNext = widget.isNext;
+    if (widget.pill != null) {
+      Pill selectedPill = widget.pill ??
+          Pill(
+            name: '',
+            dateTimes: [],
+            startDate: DateTime.now(),
+            endDate: DateTime.now(),
+            selectedDays: _selectedDays,
+            times: _times,
+          );
+      _startDate = selectedPill.startDate;
+      _endDate = selectedPill.endDate;
+      _selectedDays = selectedPill.selectedDays;
+      _times = selectedPill.times;
+      _pillNameController = TextEditingController(text: selectedPill.name);
+    }
   }
 
   void addTime(Time newTime) {
@@ -138,6 +157,8 @@ class _PillInputFormState extends State<PillInputForm> {
             DateTime(_startDate.year, _startDate.month, _startDate.day),
         'endDate':
             DateTime(_endDate.year, _endDate.month, _endDate.day, 23, 59, 59),
+        'selectedDays': _selectedDays,
+        'times': timesToMapList(_times),
       };
 
       // 기존 pills 데이터가 있는지 확인하고 새로운 약 데이터를 추가

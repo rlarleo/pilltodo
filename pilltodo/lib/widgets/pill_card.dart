@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/widgets/pill_input.dart';
 import 'package:provider/provider.dart';
 
 class PillCard extends StatefulWidget {
-  final String pillName;
+  final Pill pill;
   final IconData icon;
   final bool isInverted;
   final double index;
@@ -13,7 +14,7 @@ class PillCard extends StatefulWidget {
 
   const PillCard({
     super.key,
-    required this.pillName,
+    required this.pill,
     required this.icon,
     required this.isInverted,
     required this.index,
@@ -68,6 +69,7 @@ class _PillCardState extends State<PillCard> {
                 },
                 onRefresh: widget.onRefresh,
                 deviceId: deviceId,
+                pill: widget.pill,
               ),
               onDismissCallback: (type) {
                 _isNext = false;
@@ -92,7 +94,7 @@ class _PillCardState extends State<PillCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.pillName,
+                        widget.pill.name,
                         style: TextStyle(
                           color:
                               widget.isInverted ? Colors.black : Colors.white,
