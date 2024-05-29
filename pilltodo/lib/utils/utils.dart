@@ -35,8 +35,10 @@ Future<List<Pill>> getPills(BuildContext context) async {
   return [];
 }
 
-Future<List<DateTimeCheck>> getAlarms(BuildContext context) async {
-  String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
+Future<List<DateTimeCheck>> getAlarms(
+    String? deviceId, DateTime selectedDate) async {
+  print(deviceId);
+
   if (deviceId != null) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     DocumentReference userRef = firestore.collection('user').doc(deviceId);
@@ -52,8 +54,7 @@ Future<List<DateTimeCheck>> getAlarms(BuildContext context) async {
       List<DateTimeCheck> allDateTimeChecks = [];
 
       // 캘린더의 데이터가 보여야함
-      DateTime today = DateTime.now();
-
+      DateTime today = selectedDate.add(const Duration(seconds: 1));
       DateTime todayStart = DateTime(today.year, today.month, today.day);
       DateTime todayEnd = todayStart
           .add(const Duration(days: 1))
@@ -61,10 +62,18 @@ Future<List<DateTimeCheck>> getAlarms(BuildContext context) async {
 
       for (var pillData in pillDataList) {
         var pill = Pill.fromMap(pillData as Map<String, dynamic>);
+        print('hi');
+        print(pill.startDate);
+        print(pill.endDate);
+        print(pill.endDate);
+        print(pill.endDate);
+        print(pill.endDate);
         if (today.isAfter(pill.startDate) && today.isBefore(pill.endDate)) {
+          print('hi');
           for (var dateTimeCheck in pill.dateTimes) {
             if (dateTimeCheck.dateTime.isAfter(todayStart) &&
                 dateTimeCheck.dateTime.isBefore(todayEnd)) {
+              print('hi');
               dateTimeCheck.name = pill.name;
               allDateTimeChecks.add(dateTimeCheck);
             }

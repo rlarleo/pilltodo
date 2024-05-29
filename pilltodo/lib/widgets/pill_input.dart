@@ -134,8 +134,10 @@ class _PillInputFormState extends State<PillInputForm> {
       Map<String, dynamic> newPill = {
         'name': pillName,
         'dateTimes': dateTimes,
-        'startDate': _startDate,
-        'endDate': _endDate,
+        'startDate':
+            DateTime(_startDate.year, _startDate.month, _startDate.day),
+        'endDate':
+            DateTime(_endDate.year, _endDate.month, _endDate.day, 23, 59, 59),
       };
 
       // 기존 pills 데이터가 있는지 확인하고 새로운 약 데이터를 추가

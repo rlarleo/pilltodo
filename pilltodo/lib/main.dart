@@ -59,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
     checkAndInsertData(context);
 
     final List<Widget> bottomBarPages = [

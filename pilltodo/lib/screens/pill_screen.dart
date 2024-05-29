@@ -1,5 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_timeline_calendar/timeline/model/calendar_options.dart';
+import 'package:flutter_timeline_calendar/timeline/model/datetime.dart';
+import 'package:flutter_timeline_calendar/timeline/model/day_options.dart';
+import 'package:flutter_timeline_calendar/timeline/model/headers_options.dart';
+import 'package:flutter_timeline_calendar/timeline/provider/instance_provider.dart';
+import 'package:flutter_timeline_calendar/timeline/utils/calendar_types.dart';
+import 'package:flutter_timeline_calendar/timeline/utils/datetime_extension.dart';
+import 'package:flutter_timeline_calendar/timeline/widget/timeline_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:pilltodo/icons/custom_icons.dart';
 import 'package:pilltodo/model/device.dart';
@@ -9,19 +17,33 @@ import 'package:provider/provider.dart';
 import 'package:pilltodo/utils/utils.dart';
 
 class PillScreen extends StatefulWidget {
-  const PillScreen({super.key});
-
+  const PillScreen({
+    super.key,
+  });
   @override
   State<PillScreen> createState() => _PillScreenState();
 }
 
 class _PillScreenState extends State<PillScreen> {
   Future<List<DateTimeCheck>>? _pillsFuture;
-
+  late CalendarDateTime selectedDateTime;
+  late DateTime? weekStart;
+  late DateTime? weekEnd;
+  // ignore: avoid_init_to_null
+  late String? deviceId = null;
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _pillsFuture = getAlarms(context);
+  void initState() {
+    super.initState();
+    TimelineCalendar.calendarProvider = createInstance();
+    selectedDateTime = TimelineCalendar.calendarProvider.getDateTime();
+    getLatestWeek();
+  }
+
+  getLatestWeek() {
+    setState(() {
+      weekStart = selectedDateTime.toDateTime().findFirstDateOfTheWeek();
+      weekEnd = selectedDateTime.toDateTime().findLastDateOfTheWeek();
+    });
   }
 
   Future<void> _updateCheckedStatus(
@@ -72,20 +94,11 @@ class _PillScreenState extends State<PillScreen> {
     }
   }
 
-  var slivers = SliverToBoxAdapter(
-    child: Container(
-      height: 200,
-      color: Colors.brown,
-      alignment: Alignment.center,
-      child: const Text(
-        'Calender',
-        style: TextStyle(color: Colors.white, fontSize: 20),
-      ),
-    ),
-  );
-
   @override
   Widget build(BuildContext context) {
+    deviceId = Provider.of<DeviceProvider>(context).deviceId;
+    _pillsFuture = getAlarms(deviceId, selectedDateTime.toDateTime());
+
     return FutureBuilder<List<DateTimeCheck>>(
         future: _pillsFuture,
         builder: (context, snapshot) {
@@ -93,7 +106,19 @@ class _PillScreenState extends State<PillScreen> {
             return Scaffold(
               body: Container(
                 color: const Color.fromARGB(255, 221, 186, 173),
-                child: CustomScrollView(slivers: <Widget>[slivers]),
+                child: CustomScrollView(slivers: <Widget>[
+                  SliverToBoxAdapter(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        _timelineCalendar(),
+                      ],
+                    ),
+                  )
+                ]),
               ),
             );
           } else {
@@ -111,7 +136,17 @@ class _PillScreenState extends State<PillScreen> {
         color: const Color.fromARGB(255, 221, 186, 173),
         child: CustomScrollView(
           slivers: <Widget>[
-            slivers,
+            SliverToBoxAdapter(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  _timelineCalendar(),
+                ],
+              ),
+            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
@@ -150,6 +185,61 @@ class _PillScreenState extends State<PillScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  _timelineCalendar() {
+    return TimelineCalendar(
+      calendarType: CalendarType.GREGORIAN,
+      calendarLanguage: "en",
+      calendarOptions: CalendarOptions(
+        viewType: ViewType.DAILY,
+        toggleViewType: true,
+        headerMonthElevation: 10,
+        headerMonthShadowColor: Colors.black26,
+        headerMonthBackColor: Colors.transparent,
+      ),
+      dayOptions: DayOptions(
+        compactMode: true,
+        dayFontSize: 14.0,
+        disableFadeEffect: true,
+        weekDaySelectedColor: const Color(0xff3AC3E2),
+        // differentStyleForToday: true,
+        // todayBackgroundColor: const Color.fromARGB(255, 19, 218, 112),
+        selectedBackgroundColor: const Color(0xff3AC3E2),
+        // todayTextColor: Colors.white,
+      ),
+      headerOptions: HeaderOptions(
+          weekDayStringType: WeekDayStringTypes.SHORT,
+          monthStringType: MonthStringTypes.FULL,
+          backgroundColor: const Color(0xff3AC3E2),
+          headerTextSize: 14,
+          headerTextColor: Colors.black),
+      onChangeDateTime: (dateTime) {
+        print("Date Change $dateTime");
+        selectedDateTime = dateTime;
+        _pillsFuture = getAlarms(deviceId, dateTime.toDateTime());
+        getLatestWeek();
+      },
+      onDateTimeReset: (resetDateTime) {
+        print("Date Reset $resetDateTime");
+        selectedDateTime = resetDateTime;
+        _pillsFuture = getAlarms(deviceId, resetDateTime.toDateTime());
+        getLatestWeek();
+      },
+      onMonthChanged: (monthDateTime) {
+        print("Month Change $monthDateTime");
+        selectedDateTime = monthDateTime;
+        _pillsFuture = getAlarms(deviceId, monthDateTime.toDateTime());
+        getLatestWeek();
+      },
+      onYearChanged: (yearDateTime) {
+        print("Year Change $yearDateTime");
+        selectedDateTime = yearDateTime;
+        _pillsFuture = getAlarms(deviceId, yearDateTime.toDateTime());
+        getLatestWeek();
+      },
+      dateTime: selectedDateTime,
     );
   }
 }
