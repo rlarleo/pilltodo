@@ -113,19 +113,43 @@ class _PillInputFormState extends State<PillInputForm> {
     return '$hour:${minute.toString().padLeft(2, '0')} $period';
   }
 
-  Future<void> _updatePillsForUser(String? deviceId) async {
+  Future<void> _deletePillsForUser(String? deviceId, String? name) async {
     try {
-      String pillName = _pillNameController.text;
-      _times; // 시간 배열 ex) [Time(hour: 11, minute: 30), Time(hour: 12, minute: 30)]
-      _selectedDays; // 선택된 요일 배열 ex) [true, true, true, true, true, true, true]
-      _startDate;
-      _endDate;
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
       DocumentReference userRef = firestore.collection('user').doc(deviceId);
       DocumentSnapshot userSnapshot = await userRef.get();
 
       // 기존 pills 데이터 가져오기
+      Map<String, dynamic>? userData =
+          userSnapshot.data() as Map<String, dynamic>?;
+
+      if (userData != null) {
+        if (userData.containsKey('pills')) {
+          List<dynamic> pills = userData['pills'];
+
+          pills.removeWhere((pill) {
+            return pill is Map<String, dynamic> && pill['name'] == name;
+          });
+
+          await userRef.update({'pills': pills});
+        }
+      }
+
+      // 사용자 문서 업데이트
+    } catch (e) {
+      // 오류 처리
+      print('Error updating pills for user: $e');
+    }
+  }
+
+  Future<void> _updatePillsForUser(String? deviceId) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      DocumentReference userRef = firestore.collection('user').doc(deviceId);
+      DocumentSnapshot userSnapshot = await userRef.get();
+
       Map<String, dynamic>? userData =
           userSnapshot.data() as Map<String, dynamic>?;
 
@@ -153,7 +177,7 @@ class _PillInputFormState extends State<PillInputForm> {
 
       // 새로운 약 데이터 추가
       Map<String, dynamic> newPill = {
-        'name': pillName,
+        'name': _pillNameController.text,
         'dateTimes': dateTimes,
         'startDate':
             DateTime(_startDate.year, _startDate.month, _startDate.day),
@@ -184,6 +208,14 @@ class _PillInputFormState extends State<PillInputForm> {
   Future<void> _updateData() async {
     await _updatePillsForUser(widget.deviceId); // 비동기 함수 호출
     await widget.onRefresh(); // 업데이트 후 리프레시 콜백 호출
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pop(); // 모달 닫기
+  }
+
+  Future<void> _deleteData(name) async {
+    await _deletePillsForUser(widget.deviceId, name); // 비동기 함수 호출
+    await widget.onRefresh(); // 업데이트 후 리프레시 콜백 호출
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop(); // 모달 닫기
   }
 
@@ -279,6 +311,16 @@ class _PillInputFormState extends State<PillInputForm> {
                           style: const TextStyle(color: Colors.white),
                         ),
                       ),
+                      if (widget.inputType == 'Modify')
+                        TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.black45),
+                          onPressed: () => _deleteData(widget.pill?.name),
+                          child: const Text(
+                            "삭제하기",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
                     ],
                   ),
                 ),
