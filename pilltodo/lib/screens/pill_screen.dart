@@ -32,6 +32,7 @@ class _PillScreenState extends State<PillScreen> {
   late DateTime? weekEnd;
   // ignore: avoid_init_to_null
   late String? deviceId = null;
+
   @override
   void initState() {
     super.initState();

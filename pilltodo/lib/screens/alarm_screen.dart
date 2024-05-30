@@ -32,9 +32,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
-    print(deviceId);
-
     return Scaffold(
       backgroundColor: Colors.brown,
       body: SingleChildScrollView(
