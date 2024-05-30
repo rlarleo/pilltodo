@@ -140,6 +140,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                         times: [],
                       ),
                     );
+                    pillData.sort((a, b) => a.name.compareTo(b.name));
+                    pillData.sort((a, b) => a.startDate.compareTo(b.startDate));
 
                     return ListView.builder(
                       shrinkWrap: true, // ScrollView 안에 ListView를 사용할 때 필요

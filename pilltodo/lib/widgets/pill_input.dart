@@ -143,7 +143,7 @@ class _PillInputFormState extends State<PillInputForm> {
     }
   }
 
-  Future<void> _updatePillsForUser(String? deviceId) async {
+  Future<void> _insertPillsForUser(String? deviceId) async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -205,18 +205,26 @@ class _PillInputFormState extends State<PillInputForm> {
     }
   }
 
-  Future<void> _updateData() async {
-    await _updatePillsForUser(widget.deviceId); // 비동기 함수 호출
-    await widget.onRefresh(); // 업데이트 후 리프레시 콜백 호출
+  Future<void> _updateData(name) async {
+    await _deletePillsForUser(widget.deviceId, name);
+    await _insertPillsForUser(widget.deviceId);
+    await widget.onRefresh();
     // ignore: use_build_context_synchronously
-    Navigator.of(context).pop(); // 모달 닫기
+    Navigator.of(context).pop();
+  }
+
+  Future<void> _insertData() async {
+    await _insertPillsForUser(widget.deviceId);
+    await widget.onRefresh();
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pop();
   }
 
   Future<void> _deleteData(name) async {
-    await _deletePillsForUser(widget.deviceId, name); // 비동기 함수 호출
-    await widget.onRefresh(); // 업데이트 후 리프레시 콜백 호출
+    await _deletePillsForUser(widget.deviceId, name);
+    await widget.onRefresh();
     // ignore: use_build_context_synchronously
-    Navigator.of(context).pop(); // 모달 닫기
+    Navigator.of(context).pop();
   }
 
   @override
@@ -305,7 +313,9 @@ class _PillInputFormState extends State<PillInputForm> {
                       TextButton(
                         style: TextButton.styleFrom(
                             backgroundColor: Colors.black45),
-                        onPressed: _updateData,
+                        onPressed: widget.inputType == 'Add'
+                            ? _insertData
+                            : () => _updateData(widget.pill?.name),
                         child: Text(
                           widget.inputType == 'Add' ? "등록 하기" : "수정 하기",
                           style: const TextStyle(color: Colors.white),
