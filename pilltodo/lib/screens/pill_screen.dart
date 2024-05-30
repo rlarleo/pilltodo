@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timeline_calendar/timeline/model/calendar_options.dart';
@@ -37,6 +38,13 @@ class _PillScreenState extends State<PillScreen> {
     TimelineCalendar.calendarProvider = createInstance();
     selectedDateTime = TimelineCalendar.calendarProvider.getDateTime();
     getLatestWeek();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    deviceId = Provider.of<DeviceProvider>(context).deviceId;
+    _pillsFuture = getAlarms(deviceId, selectedDateTime.toDateTime());
   }
 
   getLatestWeek() {
@@ -96,9 +104,6 @@ class _PillScreenState extends State<PillScreen> {
 
   @override
   Widget build(BuildContext context) {
-    deviceId = Provider.of<DeviceProvider>(context).deviceId;
-    _pillsFuture = getAlarms(deviceId, selectedDateTime.toDateTime());
-
     return FutureBuilder<List<DateTimeCheck>>(
         future: _pillsFuture,
         builder: (context, snapshot) {
@@ -114,7 +119,10 @@ class _PillScreenState extends State<PillScreen> {
                         const SizedBox(
                           height: 40,
                         ),
-                        _timelineCalendar(),
+                        IgnorePointer(
+                          ignoring: true,
+                          child: _timelineCalendar(),
+                        ),
                       ],
                     ),
                   )
@@ -123,6 +131,8 @@ class _PillScreenState extends State<PillScreen> {
             );
           } else {
             List<DateTimeCheck> pills = snapshot.data ?? [];
+            pills.sort((a, b) => a.name.compareTo(b.name));
+            pills.sort((a, b) => a.dateTime.compareTo(b.dateTime));
             return _buildPillList(pills);
           }
         });
@@ -158,13 +168,28 @@ class _PillScreenState extends State<PillScreen> {
                         DateFormat('yyyy.MM.dd hh:mm').format(pill.dateTime),
                     icon: pill.checked ? Custom_Icons.check_1 : null,
                     index: 0,
-                    onPressed: () {
+                    onPressed: () async {
                       _updateCheckedStatus(
                           pill.name, pill.dateTime, !pill.checked);
                       setState(() {
-                        // 해당 카드를 눌렀을 때 checked 값을 변경합니다.
                         pills[index].checked = !pills[index].checked;
                       });
+
+                      AwesomeDialog(
+                        context: context,
+                        keyboardAware: true,
+                        dismissOnBackKeyPress: false,
+                        dialogType: DialogType.warning,
+                        animType: AnimType.bottomSlide,
+                        btnCancelText: "Cancel Order",
+                        btnOkText: "Yes, I will pay",
+                        title: 'Continue to pay?',
+                        // padding: const EdgeInsets.all(5.0),
+                        desc:
+                            'Please confirm that you will pay 3000 INR within 30 mins. Creating orders without paying will create penalty charges, and your account may be disabled.',
+                        btnCancelOnPress: () {},
+                        btnOkOnPress: () {},
+                      ).show();
                     },
                   );
                 },
