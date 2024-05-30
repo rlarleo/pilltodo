@@ -84,7 +84,7 @@ class _AddCardState extends State<AddCard> {
             curve: Curves.easeInOut,
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
-              color: widget.isInverted ? Colors.white : Colors.black,
+              color: widget.isInverted ? Colors.grey[400] : Colors.black,
               borderRadius: BorderRadius.circular(25),
             ),
             child: Padding(

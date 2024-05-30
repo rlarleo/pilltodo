@@ -1,4 +1,5 @@
-// utils.dart
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
+import 'package:pilltodo/screens/first_screen.dart';
 import 'package:provider/provider.dart';
 
 Future<List<Pill>> getPills(BuildContext context) async {
@@ -88,7 +90,8 @@ Future<List<DateTimeCheck>> getAlarms(
 
 Future<void> checkAndInsertData(BuildContext context) async {
   String deviceId = await getDeviceUniqueId();
-  print(deviceId);
+  final deviceProvider = Provider.of<DeviceProvider>(context, listen: false);
+  deviceProvider.deviceId = deviceId;
   try {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     // 해당 deviceId가 존재하는지 확인
@@ -98,25 +101,17 @@ Future<void> checkAndInsertData(BuildContext context) async {
         .get();
 
     if (querySnapshot.docs.isEmpty) {
-      // 존재하지 않으면 새 데이터 추가
-      await firestore.collection('user').doc(deviceId).set({
-        'deviceId': deviceId,
-        'timestamp': DateTime.now(),
-        'gender': null,
-        'name': null,
-        'pills': null,
-      });
-      print('Data inserted successfully!');
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const FirstScreen(),
+        ),
+      );
     } else {
       print('Device ID already exists.');
     }
   } catch (e) {
     print('Error checking or inserting data: $e');
   }
-  // Provider.of<DeviceProvider>(context, listen: false).deviceId = deviceId;
-
-  final deviceProvider = Provider.of<DeviceProvider>(context, listen: false);
-  deviceProvider.deviceId = deviceId;
 }
 
 Future<String> getDeviceUniqueId() async {
