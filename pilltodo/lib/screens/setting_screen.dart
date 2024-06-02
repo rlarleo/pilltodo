@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pilltodo/provider/device_provider.dart';
-import 'package:pilltodo/screens/first_screen.dart';
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
