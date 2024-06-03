@@ -11,25 +11,8 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   String? _selectedGender;
-  bool _isLoading = false;
-
-  Future<void> _onSubmit(String? deviceId) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('user')
-          .doc(deviceId)
-          .delete();
-      // Navigator.of(context).push(
-      //   MaterialPageRoute(
-      //     builder: (context) => const FirstScreen(),
-      //   ),
-      // );
-    } catch (e) {
-      print('Error deleting user document: $e');
-    }
-  }
 
   Future<void> _updateUserData(String? deviceId) async {
     await FirebaseFirestore.instance.collection('user').doc(deviceId).update({
@@ -38,6 +21,7 @@ class _SettingScreenState extends State<SettingScreen> {
       'timestamp': DateTime.now(),
     });
 
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User updated successfully')));
   }

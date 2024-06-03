@@ -10,6 +10,23 @@ import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/screens/first_screen.dart';
 import 'package:provider/provider.dart';
 
+Future<User?> getUser(BuildContext context) async {
+  String? deviceId =
+      Provider.of<DeviceProvider>(context, listen: false).deviceId;
+  if (deviceId != null) {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    DocumentReference userRef = firestore.collection('user').doc(deviceId);
+    DocumentSnapshot userSnapshot = await userRef.get();
+
+    // 기존 pills 데이터 가져오기
+    Map<String, dynamic>? userData =
+        userSnapshot.data() as Map<String, dynamic>?;
+
+    return User(name: userData?["name"], gender: userData?["gender"]);
+  }
+  return null;
+}
+
 Future<List<Pill>> getPills(BuildContext context) async {
   String? deviceId =
       Provider.of<DeviceProvider>(context, listen: false).deviceId;

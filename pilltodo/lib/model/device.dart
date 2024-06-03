@@ -11,6 +11,12 @@ class Device {
   }
 }
 
+class User {
+  String? name;
+  String? gender;
+  User({required this.name, required this.gender});
+}
+
 class FirebaseTime {
   final int hour;
   final int minute;
