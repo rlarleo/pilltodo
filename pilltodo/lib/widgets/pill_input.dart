@@ -3,6 +3,7 @@ import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:pilltodo/icons/custom_icons.dart';
 import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/widgets/button.dart';
 
@@ -236,8 +237,9 @@ class _PillInputFormState extends State<PillInputForm> {
               SizedBox(
                 height: 500,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
@@ -254,15 +256,14 @@ class _PillInputFormState extends State<PillInputForm> {
                           itemCount: _times.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: Row(
                                 children: [
                                   Expanded(
                                     child: TextButton(
                                       style: TextButton.styleFrom(
-                                        backgroundColor: Colors.black45,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 16.0),
+                                        backgroundColor: const Color.fromARGB(
+                                            115, 16, 117, 19),
                                       ),
                                       onPressed: () => showTimePicker(index),
                                       child: Text(
@@ -274,7 +275,8 @@ class _PillInputFormState extends State<PillInputForm> {
                                     ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.close),
+                                    icon: const Icon(Custom_Icons.cancel),
+                                    color: Colors.red,
                                     onPressed: () {
                                       setState(() {
                                         _times.removeAt(index);
@@ -307,6 +309,20 @@ class _PillInputFormState extends State<PillInputForm> {
                         },
                         child: const Text(
                           "시간 추가",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.black45),
+                        onPressed: () {
+                          setState(() {
+                            _isNext = false;
+                          });
+                          widget.onChanged(false);
+                        },
+                        child: const Text(
+                          "이전",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

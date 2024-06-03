@@ -1983,12 +1983,16 @@ class Custom_Icons {
       IconData(0xebc9, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData doc_add =
       IconData(0xebca, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData okOutline =
+  static const IconData ok_outline =
       IconData(0xebcb, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData ok =
       IconData(0xebcc, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData ok_1 =
       IconData(0xebcd, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData cancel_circled_outline =
+      IconData(0xebce, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData cancel_circled =
+      IconData(0xebcf, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData glass_martini =
       IconData(0xf000, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData music =

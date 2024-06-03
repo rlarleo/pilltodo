@@ -11,6 +11,10 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
+  TextEditingController _nameController = TextEditingController();
+  String? _selectedGender;
+  bool _isLoading = false;
+
   Future<void> _onSubmit(String? deviceId) async {
     try {
       await FirebaseFirestore.instance
@@ -25,6 +29,17 @@ class _SettingScreenState extends State<SettingScreen> {
     } catch (e) {
       print('Error deleting user document: $e');
     }
+  }
+
+  Future<void> _updateUserData(String? deviceId) async {
+    await FirebaseFirestore.instance.collection('user').doc(deviceId).update({
+      'name': _nameController.text,
+      'gender': _selectedGender,
+      'timestamp': DateTime.now(),
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User updated successfully')));
   }
 
   @override
@@ -43,11 +58,42 @@ class _SettingScreenState extends State<SettingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              ElevatedButton(
-                onPressed: () => _onSubmit(deviceId),
-                child: const Text('초기화'),
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: '이름을 입력해주세요.',
+                ),
               ),
               const SizedBox(height: 20.0),
+              Row(
+                children: [
+                  Radio<String>(
+                    value: '형아',
+                    groupValue: _selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedGender = value;
+                      });
+                    },
+                  ),
+                  const Text('Male'),
+                  Radio<String>(
+                    value: '누나',
+                    groupValue: _selectedGender,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedGender = value;
+                      });
+                    },
+                  ),
+                  const Text('Female'),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () => _updateUserData(deviceId),
+                child: const Text('수정'),
+              ),
             ],
           ),
         ),

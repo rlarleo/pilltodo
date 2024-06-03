@@ -9,10 +9,9 @@ class FirstScreen extends StatefulWidget {
   State<FirstScreen> createState() => _FirstScreenState();
 }
 
-TextEditingController _nameController = TextEditingController();
-String? _selectedGender;
-
 class _FirstScreenState extends State<FirstScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  String? _selectedGender;
   Future<void> _onSubmit(BuildContext context) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String? deviceId = await getDeviceUniqueId();
