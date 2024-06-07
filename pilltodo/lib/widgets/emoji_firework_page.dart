@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pilltodo/main.dart';
 import 'package:pilltodo/screens/pill_screen.dart';
 import 'package:pilltodo/widgets/emoji_firework_widget.dart';
@@ -84,7 +85,7 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
         children: [
           ClipRRect(
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 70, sigmaY: 70),
+              filter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
               child: Container(),
             ),
           ),
@@ -151,34 +152,45 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
   // 기프트 카드.
   Container _giftCard({required int index}) {
     return Container(
-      width: _cardWidth,
-      height: _cardHeight,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: widget.colors,
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black45,
-            spreadRadius: 0,
-            blurRadius: 15,
-            offset: Offset(10, 10),
-          ),
-        ],
-      ),
-      child: (index == 0)
-          ? const Material(
-              type: MaterialType.transparency,
-              child: Text(
-                '참 잘했어요',
-                style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
+        width: _cardWidth,
+        height: _cardHeight,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: widget.colors,
+          borderRadius: BorderRadius.circular(25),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black45,
+              spreadRadius: 0,
+              blurRadius: 15,
+              offset: Offset(10, 10),
+            ),
+          ],
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          child: Stack(children: [
+            const Text(
+              '참 잘했어요',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            Positioned(
+              bottom: 0, // 원하는 수직 위치
+              left: 0, // 원하는 수평 위치
+              right: 0, // 원하는 수평 위치
+              child: Center(
+                child: Image.asset(
+                  'assets/images/heart-11534_256.gif',
+                  width: 100,
+                  height: 100,
                 ),
               ),
-            )
-          : const SizedBox.shrink(),
-    );
+            ),
+          ]),
+        ));
   }
 
   // 구매 버튼.
@@ -188,10 +200,6 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
       margin: const EdgeInsets.symmetric(horizontal: 20) +
           const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        color: Colors.blueAccent,
-        borderRadius: BorderRadius.circular(15),
-      ),
       child: Center(
         child: TextButton(
           style: TextButton.styleFrom(backgroundColor: Colors.black45),
@@ -208,7 +216,7 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
             );
           },
           child: const Text(
-            "시간 추가",
+            "확인",
             style: TextStyle(color: Colors.white),
           ),
         ),

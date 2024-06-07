@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timeline_calendar/timeline/model/calendar_options.dart';
 import 'package:flutter_timeline_calendar/timeline/model/datetime.dart';
@@ -27,7 +28,7 @@ class PillScreen extends StatefulWidget {
 
 class _PillScreenState extends State<PillScreen> {
   Future<List<DateTimeCheck>>? _pillsFuture;
-  late CalendarDateTime selectedDateTime;
+  late DateTime _focusDate = DateTime.now();
   late DateTime? weekStart;
   late DateTime? weekEnd;
   // ignore: avoid_init_to_null
@@ -37,22 +38,13 @@ class _PillScreenState extends State<PillScreen> {
   void initState() {
     super.initState();
     TimelineCalendar.calendarProvider = createInstance();
-    selectedDateTime = TimelineCalendar.calendarProvider.getDateTime();
-    getLatestWeek();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     deviceId = Provider.of<DeviceProvider>(context).deviceId;
-    _pillsFuture = getAlarms(deviceId, selectedDateTime.toDateTime());
-  }
-
-  getLatestWeek() {
-    setState(() {
-      weekStart = selectedDateTime.toDateTime().findFirstDateOfTheWeek();
-      weekEnd = selectedDateTime.toDateTime().findLastDateOfTheWeek();
-    });
+    _pillsFuture = getAlarms(deviceId, _focusDate);
   }
 
   Future<void> _updateCheckedStatus(
@@ -107,40 +99,14 @@ class _PillScreenState extends State<PillScreen> {
     return FutureBuilder<List<DateTimeCheck>>(
         future: _pillsFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Scaffold(
-              body: Container(
-                color: const Color.fromARGB(255, 221, 186, 173),
-                child: CustomScrollView(slivers: <Widget>[
-                  SliverToBoxAdapter(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        IgnorePointer(
-                          ignoring: true,
-                          child: _timelineCalendar(),
-                        ),
-                      ],
-                    ),
-                  )
-                ]),
-              ),
-            );
-          } else {
-            List<DateTimeCheck> pills = snapshot.data ?? [];
-            pills.sort((a, b) => a.name.compareTo(b.name));
-            pills.sort((a, b) => a.dateTime.compareTo(b.dateTime));
-            return _buildPillList(pills);
-          }
+          List<DateTimeCheck> pills = snapshot.data ?? [];
+          pills.sort((a, b) => a.name.compareTo(b.name));
+          pills.sort((a, b) => a.dateTime.compareTo(b.dateTime));
+          return _buildPillList(pills);
         });
   }
 
   Widget _buildPillList(List<DateTimeCheck> pills) {
-    // pills 데이터를 사용하여 UI를 빌드하는 코드를 여기에 작성하세요.
-    // 예를 들어 ListView.builder 또는 SliverList를 사용하여 리스트를 만들 수 있습니다.
     return Scaffold(
       body: Container(
         color: const Color.fromARGB(255, 221, 186, 173),
@@ -151,9 +117,12 @@ class _PillScreenState extends State<PillScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(
-                    height: 40,
+                    height: 60,
                   ),
                   _timelineCalendar(),
+                  const SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),
@@ -164,8 +133,7 @@ class _PillScreenState extends State<PillScreen> {
                       pills[index]; // 현재 인덱스에 해당하는 Pill 객체 가져오기
                   return CheckCard(
                     pillName: pill.name,
-                    dateTime:
-                        DateFormat('yyyy.MM.dd hh:mm').format(pill.dateTime),
+                    dateTime: DateFormat('hh:mm a').format(pill.dateTime),
                     icon: pill.checked ? Custom_Icons.check_1 : null,
                     index: 0,
                     onPressed: () async {
@@ -185,19 +153,20 @@ class _PillScreenState extends State<PillScreen> {
                           pageBuilder:
                               (context, animation, secondaryAnimation) {
                             return EmojiFireworkPage(
-                              colors: Colors.red,
+                              colors: const Color.fromARGB(255, 207, 107, 100),
                               tag: index,
                             );
                           },
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
-                            const begin = Offset(1.0, 0.0);
-                            const end = Offset.zero;
+                            const begin = 0.0;
+                            const end = 1.0;
                             const curve = Curves.ease;
                             final tween = Tween(begin: begin, end: end)
                                 .chain(CurveTween(curve: curve));
-                            return SlideTransition(
-                              position: animation.drive(tween),
+
+                            return ScaleTransition(
+                              scale: animation.drive(tween),
                               child: child,
                             );
                           },
@@ -217,12 +186,7 @@ class _PillScreenState extends State<PillScreen> {
             SliverToBoxAdapter(
               child: Container(
                 height: 120,
-                color: Colors.red,
                 alignment: Alignment.center,
-                child: const Text(
-                  'Bottom Container',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
               ),
             ),
           ],
@@ -232,57 +196,61 @@ class _PillScreenState extends State<PillScreen> {
   }
 
   _timelineCalendar() {
-    return TimelineCalendar(
-      calendarType: CalendarType.GREGORIAN,
-      calendarLanguage: "en",
-      calendarOptions: CalendarOptions(
-        viewType: ViewType.DAILY,
-        toggleViewType: true,
-        headerMonthElevation: 10,
-        headerMonthShadowColor: Colors.black26,
-        headerMonthBackColor: Colors.transparent,
+    return EasyInfiniteDateTimeLine(
+      selectionMode: const SelectionMode.autoCenter(),
+      firstDate: DateTime.now().subtract(const Duration(days: 365)),
+      focusDate: _focusDate,
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+      onDateChange: (selectedDate) {
+        setState(() {
+          _focusDate = selectedDate;
+        });
+        _pillsFuture = getAlarms(deviceId, selectedDate);
+      },
+      dayProps: const EasyDayProps(
+        // You must specify the width in this case.
+        width: 50.0,
+        // The height is not required in this case.
+        height: 50.0,
       ),
-      dayOptions: DayOptions(
-        compactMode: true,
-        dayFontSize: 14.0,
-        disableFadeEffect: true,
-        weekDaySelectedColor: const Color(0xff3AC3E2),
-        // differentStyleForToday: true,
-        // todayBackgroundColor: const Color.fromARGB(255, 19, 218, 112),
-        selectedBackgroundColor: const Color(0xff3AC3E2),
-        // todayTextColor: Colors.white,
-      ),
-      headerOptions: HeaderOptions(
-          weekDayStringType: WeekDayStringTypes.SHORT,
-          monthStringType: MonthStringTypes.FULL,
-          backgroundColor: const Color(0xff3AC3E2),
-          headerTextSize: 14,
-          headerTextColor: Colors.black),
-      onChangeDateTime: (dateTime) {
-        print("Date Change $dateTime");
-        selectedDateTime = dateTime;
-        _pillsFuture = getAlarms(deviceId, dateTime.toDateTime());
-        getLatestWeek();
+      itemBuilder: (
+        BuildContext context,
+        DateTime date,
+        bool isSelected,
+        VoidCallback onTap,
+      ) {
+        return InkResponse(
+          onTap: onTap,
+          child: CircleAvatar(
+            backgroundColor:
+                isSelected ? Colors.amber : Colors.amber.withOpacity(0.1),
+            radius: 32.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    date.day.toString(),
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: isSelected ? Colors.white : null,
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Text(
+                    EasyDateFormatter.shortDayName(date, "en_US"),
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: isSelected ? Colors.white : null,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
-      onDateTimeReset: (resetDateTime) {
-        print("Date Reset $resetDateTime");
-        selectedDateTime = resetDateTime;
-        _pillsFuture = getAlarms(deviceId, resetDateTime.toDateTime());
-        getLatestWeek();
-      },
-      onMonthChanged: (monthDateTime) {
-        print("Month Change $monthDateTime");
-        selectedDateTime = monthDateTime;
-        _pillsFuture = getAlarms(deviceId, monthDateTime.toDateTime());
-        getLatestWeek();
-      },
-      onYearChanged: (yearDateTime) {
-        print("Year Change $yearDateTime");
-        selectedDateTime = yearDateTime;
-        _pillsFuture = getAlarms(deviceId, yearDateTime.toDateTime());
-        getLatestWeek();
-      },
-      dateTime: selectedDateTime,
     );
   }
 }
