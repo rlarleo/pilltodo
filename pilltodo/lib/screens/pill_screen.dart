@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timeline_calendar/timeline/model/calendar_options.dart';
@@ -14,6 +13,8 @@ import 'package:pilltodo/icons/custom_icons.dart';
 import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/widgets/check_card.dart';
+import 'package:pilltodo/widgets/emoji_firework_page.dart';
+import 'package:pilltodo/widgets/gift_card_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pilltodo/utils/utils.dart';
 
@@ -176,21 +177,57 @@ class _PillScreenState extends State<PillScreen> {
                         pills[index].checked = !pills[index].checked;
                       });
 
-                      AwesomeDialog(
-                        context: context,
-                        keyboardAware: true,
-                        dismissOnBackKeyPress: false,
-                        dialogType: DialogType.warning,
-                        animType: AnimType.bottomSlide,
-                        btnCancelText: "Cancel Order",
-                        btnOkText: "Yes, I will pay",
-                        title: 'Continue to pay?',
-                        // padding: const EdgeInsets.all(5.0),
-                        desc:
-                            'Please confirm that you will pay 3000 INR within 30 mins. Creating orders without paying will create penalty charges, and your account may be disabled.',
-                        btnCancelOnPress: () {},
-                        btnOkOnPress: () {},
-                      ).show();
+                      // Navigator.of(context).push(
+                      //   PageRouteBuilder(
+                      //     opaque: false,
+                      //     transitionDuration: const Duration(milliseconds: 200),
+                      //     reverseTransitionDuration:
+                      //         const Duration(milliseconds: 200),
+                      //     pageBuilder:
+                      //         (context, animation, secondaryAnimation) {
+                      //       return GiftCardPage(
+                      //         colors: Colors.red,
+                      //         tag: index,
+                      //       );
+                      //     },
+                      //     transitionsBuilder:
+                      //         (context, animation, secondaryAnimation, child) {
+                      //       const begin = Offset(1.0, 0.0);
+                      //       const end = Offset.zero;
+                      //       const curve = Curves.ease;
+                      //       final tween = Tween(begin: begin, end: end)
+                      //           .chain(CurveTween(curve: curve));
+                      //       return SlideTransition(
+                      //         position: animation.drive(tween),
+                      //         child: child,
+                      //       );
+                      //     },
+                      //   ),
+                      // );
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          opaque: false,
+                          transitionDuration: const Duration(milliseconds: 200),
+                          reverseTransitionDuration:
+                              const Duration(milliseconds: 200),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return EmojiFireworkPage();
+                          },
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(1.0, 0.0);
+                            const end = Offset.zero;
+                            const curve = Curves.ease;
+                            final tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
                     },
                   );
                 },

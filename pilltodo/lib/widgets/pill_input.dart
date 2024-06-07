@@ -68,6 +68,9 @@ class _PillInputFormState extends State<PillInputForm> {
             selectedDays: _selectedDays,
             times: _times,
           );
+      print(DateTime.now());
+      print(selectedPill.startDate);
+      print(selectedPill.endDate);
       _startDate = selectedPill.startDate;
       _endDate = selectedPill.endDate;
       _selectedDays = selectedPill.selectedDays;
@@ -505,9 +508,11 @@ class _PillInputFormState extends State<PillInputForm> {
   }
 
   Future<void> _selectDateRange() async {
+    print(_startDate);
+    print(_endDate);
     final DateTimeRange? picked = await showDateRangePicker(
       context: context,
-      firstDate: DateTime.now(),
+      firstDate: DateTime(2023),
       lastDate: DateTime.now().add(const Duration(days: 365)),
       initialDateRange: DateTimeRange(
         start: _startDate,
