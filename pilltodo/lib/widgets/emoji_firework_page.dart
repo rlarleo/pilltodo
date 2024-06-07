@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:pilltodo/main.dart';
 import 'package:pilltodo/screens/pill_screen.dart';
 import 'package:pilltodo/widgets/emoji_firework_widget.dart';
 
@@ -201,7 +202,7 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
                 transitionDuration: const Duration(milliseconds: 200),
                 reverseTransitionDuration: const Duration(milliseconds: 200),
                 pageBuilder: (context, animation, secondaryAnimation) {
-                  return const PillScreen();
+                  return const MyApp();
                 },
               ),
             );

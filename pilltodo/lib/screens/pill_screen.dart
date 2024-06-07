@@ -175,7 +175,8 @@ class _PillScreenState extends State<PillScreen> {
                         pills[index].checked = !pills[index].checked;
                       });
 
-                      Navigator.of(context).push(
+                      Navigator.of(context)
+                          .push(
                         PageRouteBuilder(
                           opaque: false,
                           transitionDuration: const Duration(milliseconds: 200),
@@ -201,7 +202,12 @@ class _PillScreenState extends State<PillScreen> {
                             );
                           },
                         ),
-                      );
+                      )
+                          .then((value) {
+                        setState(() {
+                          // setState를 호출하여 화면을 다시 그립니다.
+                        });
+                      });
                     },
                   );
                 },
