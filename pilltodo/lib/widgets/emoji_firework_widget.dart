@@ -53,29 +53,28 @@ class EmojiFireWork {
   final double emojiSize;
 
   // methods
-  void addFireworkWidget(Offset offset) {
-    print('hihi');
+  void addFireworkWidget(Offset offset, double startPosition) {
     final fireworkWidgetKey = UniqueKey();
 
     fireworkWidgets.addEntries(<Key, _FireworkWidget>{
       fireworkWidgetKey: _FireworkWidget(
-        key: fireworkWidgetKey,
-        notifyWidgetIsDisposed: (UniqueKey widgetKey) {
-          fireworkWidgets.remove(widgetKey);
-        },
-        offset: offset,
-        emojiAsset: emojiAsset,
-        emojiAmount: emojiAmount,
-        emojiLifetimeDurationSec: emojiLifetimeDurationSec,
-        emojiShootDurationSec: emojiShootDurationSec,
-        emojiShootingXScale: emojiShootingXScale,
-        emojiShootingYScale: emojiShootingYScale,
-        emojiFloatingXScale: emojiFloatingXScale,
-        emojiFloatingYScale: emojiFloatingYScale,
-        emojiSizeDeltaScale: emojiSizeDeltaScale,
-        emojiTransparentThreshold: emojiTransparentThreshold,
-        emojiSize: emojiSize,
-      )
+          key: fireworkWidgetKey,
+          notifyWidgetIsDisposed: (UniqueKey widgetKey) {
+            fireworkWidgets.remove(widgetKey);
+          },
+          offset: offset,
+          emojiAsset: emojiAsset,
+          emojiAmount: emojiAmount,
+          emojiLifetimeDurationSec: emojiLifetimeDurationSec,
+          emojiShootDurationSec: emojiShootDurationSec,
+          emojiShootingXScale: emojiShootingXScale,
+          emojiShootingYScale: emojiShootingYScale,
+          emojiFloatingXScale: emojiFloatingXScale,
+          emojiFloatingYScale: emojiFloatingYScale,
+          emojiSizeDeltaScale: emojiSizeDeltaScale,
+          emojiTransparentThreshold: emojiTransparentThreshold,
+          emojiSize: emojiSize,
+          startPosition: startPosition)
     }.entries);
   }
 }
@@ -96,6 +95,7 @@ class _FireworkWidget extends StatefulWidget {
     required this.emojiSizeDeltaScale,
     required this.emojiTransparentThreshold,
     required this.emojiSize,
+    required this.startPosition,
   });
   final Function notifyWidgetIsDisposed;
   final AssetImage emojiAsset;
@@ -110,6 +110,7 @@ class _FireworkWidget extends StatefulWidget {
   final double emojiSizeDeltaScale;
   final double emojiTransparentThreshold;
   final double emojiSize;
+  final double startPosition;
 
   @override
   State<_FireworkWidget> createState() => _FireworkWidgetState();
@@ -171,6 +172,7 @@ class _FireworkWidgetState extends State<_FireworkWidget>
               emojiSizeDeltaScale: widget.emojiSizeDeltaScale,
               emojiTransparentThreshold: widget.emojiTransparentThreshold,
               emojiSize: widget.emojiSize,
+              startPosition: widget.startPosition,
             ),
           ),
         ),
@@ -262,6 +264,7 @@ class EmojiWidget extends StatefulWidget {
     required this.emojiSizeDeltaScale,
     required this.emojiTransparentThreshold,
     required this.emojiSize,
+    required this.startPosition,
   });
 
   final AssetImage emojiAsset;
@@ -278,6 +281,7 @@ class EmojiWidget extends StatefulWidget {
   final double emojiSizeDeltaScale;
   final double emojiTransparentThreshold;
   final double emojiSize;
+  final double startPosition;
 
   @override
   State<EmojiWidget> createState() => EmojiWidgetState();
@@ -293,6 +297,7 @@ class EmojiWidgetState extends State<EmojiWidget> {
   late final double emojiSizeDeltaScale;
   late final double emojiTransparentThreshold;
   late final double emojiSize;
+  late final double startPosition;
 
   @override
   void initState() {
@@ -305,6 +310,7 @@ class EmojiWidgetState extends State<EmojiWidget> {
     emojiSizeDeltaScale = widget.emojiSizeDeltaScale;
     emojiTransparentThreshold = widget.emojiTransparentThreshold;
     emojiSize = widget.emojiSize;
+    startPosition = widget.startPosition;
 
     randomScaleX = Random().nextDouble() * 2 - 1;
     randomScaleY = Random().nextDouble() * 2 - 1;
@@ -325,14 +331,16 @@ class EmojiWidgetState extends State<EmojiWidget> {
         ? 0
         : widget.emojiFloatYAnimation.value * -1 * emojiFloatingYScale;
 
-    var emojiAnimationPositionX = MediaQuery.of(context).size.width / 3 +
-        widget.offset.dx +
-        emojiAnimationShootX +
-        emojiAnimationFloatX;
-    var emojiAnimationPositionY = MediaQuery.of(context).size.height / 3 +
-        widget.offset.dy +
-        emojiAnimationShootY +
-        emojiAnimationFloatY;
+    var emojiAnimationPositionX =
+        MediaQuery.of(context).size.width / startPosition +
+            widget.offset.dx +
+            emojiAnimationShootX +
+            emojiAnimationFloatX;
+    var emojiAnimationPositionY =
+        MediaQuery.of(context).size.height / startPosition +
+            widget.offset.dy +
+            emojiAnimationShootY +
+            emojiAnimationFloatY;
 
     var emojiScale = sin(
                 (widget.emojiLifeTimeAnimation.value + distinctiveRandomSeed) *

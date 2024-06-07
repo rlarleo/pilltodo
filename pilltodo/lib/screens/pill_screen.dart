@@ -14,7 +14,6 @@ import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/widgets/check_card.dart';
 import 'package:pilltodo/widgets/emoji_firework_page.dart';
-import 'package:pilltodo/widgets/gift_card_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pilltodo/utils/utils.dart';
 
@@ -58,7 +57,6 @@ class _PillScreenState extends State<PillScreen> {
 
   Future<void> _updateCheckedStatus(
       String pillName, DateTime dateTime, bool checked) async {
-    print(checked);
     String? deviceId =
         Provider.of<DeviceProvider>(context, listen: false).deviceId;
 
@@ -177,33 +175,6 @@ class _PillScreenState extends State<PillScreen> {
                         pills[index].checked = !pills[index].checked;
                       });
 
-                      // Navigator.of(context).push(
-                      //   PageRouteBuilder(
-                      //     opaque: false,
-                      //     transitionDuration: const Duration(milliseconds: 200),
-                      //     reverseTransitionDuration:
-                      //         const Duration(milliseconds: 200),
-                      //     pageBuilder:
-                      //         (context, animation, secondaryAnimation) {
-                      //       return GiftCardPage(
-                      //         colors: Colors.red,
-                      //         tag: index,
-                      //       );
-                      //     },
-                      //     transitionsBuilder:
-                      //         (context, animation, secondaryAnimation, child) {
-                      //       const begin = Offset(1.0, 0.0);
-                      //       const end = Offset.zero;
-                      //       const curve = Curves.ease;
-                      //       final tween = Tween(begin: begin, end: end)
-                      //           .chain(CurveTween(curve: curve));
-                      //       return SlideTransition(
-                      //         position: animation.drive(tween),
-                      //         child: child,
-                      //       );
-                      //     },
-                      //   ),
-                      // );
                       Navigator.of(context).push(
                         PageRouteBuilder(
                           opaque: false,
@@ -212,7 +183,10 @@ class _PillScreenState extends State<PillScreen> {
                               const Duration(milliseconds: 200),
                           pageBuilder:
                               (context, animation, secondaryAnimation) {
-                            return EmojiFireworkPage();
+                            return EmojiFireworkPage(
+                              colors: Colors.red,
+                              tag: index,
+                            );
                           },
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
