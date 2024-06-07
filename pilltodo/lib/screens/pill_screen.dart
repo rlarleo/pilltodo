@@ -1,14 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_timeline_calendar/timeline/model/calendar_options.dart';
-import 'package:flutter_timeline_calendar/timeline/model/datetime.dart';
-import 'package:flutter_timeline_calendar/timeline/model/day_options.dart';
-import 'package:flutter_timeline_calendar/timeline/model/headers_options.dart';
-import 'package:flutter_timeline_calendar/timeline/provider/instance_provider.dart';
-import 'package:flutter_timeline_calendar/timeline/utils/calendar_types.dart';
-import 'package:flutter_timeline_calendar/timeline/utils/datetime_extension.dart';
-import 'package:flutter_timeline_calendar/timeline/widget/timeline_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:pilltodo/icons/custom_icons.dart';
 import 'package:pilltodo/model/device.dart';
@@ -33,12 +25,6 @@ class _PillScreenState extends State<PillScreen> {
   late DateTime? weekEnd;
   // ignore: avoid_init_to_null
   late String? deviceId = null;
-
-  @override
-  void initState() {
-    super.initState();
-    TimelineCalendar.calendarProvider = createInstance();
-  }
 
   @override
   void didChangeDependencies() {
