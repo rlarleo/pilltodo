@@ -1,11 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
+import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/widgets/example_card.dart';
 
 class SwiperPage extends StatefulWidget {
+  final List<Pill> pills;
+  final Future<void> Function() onRefresh;
+
   const SwiperPage({
     super.key,
+    required this.pills,
+    required this.onRefresh,
   });
 
   @override
@@ -15,59 +21,9 @@ class SwiperPage extends StatefulWidget {
 class _ExamplePageState extends State<SwiperPage> {
   final AppinioSwiperController controller = AppinioSwiperController();
 
-  List<ExampleCandidateModel> candidates = [
-    ExampleCandidateModel(
-      name: 'Eight, 8',
-      job: 'Manager',
-      city: 'Town',
-      color: gradientPink,
-    ),
-    ExampleCandidateModel(
-      name: 'Seven, 7',
-      job: 'Manager',
-      city: 'Town',
-      color: gradientBlue,
-    ),
-    ExampleCandidateModel(
-      name: 'Six, 6',
-      job: 'Manager',
-      city: 'Town',
-      color: gradientPurple,
-    ),
-    ExampleCandidateModel(
-      name: 'Five, 5',
-      job: 'Manager',
-      city: 'Town',
-      color: gradientRed,
-    ),
-    ExampleCandidateModel(
-      name: 'Four, 4',
-      job: 'Manager',
-      city: 'Town',
-      color: gradientPink,
-    ),
-    ExampleCandidateModel(
-      name: 'Three, 3',
-      job: 'Manager',
-      city: 'Town',
-      color: gradientBlue,
-    ),
-    ExampleCandidateModel(
-      name: 'Two, 2',
-      job: 'Manager',
-      city: 'Town',
-      color: gradientPurple,
-    ),
-    ExampleCandidateModel(
-      name: 'One, 1',
-      job: 'Manager',
-      city: 'Town',
-      color: gradientRed,
-    ),
-  ];
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 1)).then((_) {
+    Future.delayed(const Duration(seconds: 0)).then((_) {
       _shakeCard();
     });
     super.initState();
@@ -80,10 +36,10 @@ class _ExamplePageState extends State<SwiperPage> {
         child: Column(
           children: [
             const SizedBox(
-              height: 50,
+              height: 20,
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * .75,
+              height: MediaQuery.of(context).size.height * .45,
               child: Padding(
                 padding: const EdgeInsets.only(
                   left: 25,
@@ -93,7 +49,8 @@ class _ExamplePageState extends State<SwiperPage> {
                 ),
                 child: AppinioSwiper(
                   invertAngleOnBottomDrag: true,
-                  backgroundCardCount: 3,
+                  backgroundCardCount:
+                      widget.pills.length > 2 ? 2 : widget.pills.length - 1,
                   swipeOptions: const SwipeOptions.all(),
                   controller: controller,
                   onCardPositionChanged: (
@@ -101,9 +58,12 @@ class _ExamplePageState extends State<SwiperPage> {
                   ) {},
                   onSwipeEnd: _swipeEnd,
                   onEnd: _onEnd,
-                  cardCount: candidates.length,
+                  cardCount: widget.pills.length,
                   cardBuilder: (BuildContext context, int index) {
-                    return ExampleCard(candidate: candidates[index]);
+                    return ExampleCard(
+                      pill: widget.pills[index],
+                      onRefresh: widget.onRefresh,
+                    );
                   },
                   loop: true,
                 ),
@@ -120,7 +80,7 @@ class _ExamplePageState extends State<SwiperPage> {
       case Swipe():
         print('The card was swiped to the : ${activity.direction}');
         print('previous index: $previousIndex, target index: $targetIndex');
-        print(candidates);
+        print(widget.pills);
         break;
       case Unswipe():
         print('A ${activity.direction.name} swipe was undone.');
@@ -161,20 +121,6 @@ class _ExamplePageState extends State<SwiperPage> {
       curve: Curves.easeInOut,
     );
   }
-}
-
-class ExampleCandidateModel {
-  String? name;
-  String? job;
-  String? city;
-  LinearGradient? color;
-
-  ExampleCandidateModel({
-    this.name,
-    this.job,
-    this.city,
-    this.color,
-  });
 }
 
 const LinearGradient gradientRed = LinearGradient(

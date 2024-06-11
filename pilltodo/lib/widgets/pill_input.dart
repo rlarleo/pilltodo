@@ -224,13 +224,6 @@ class _PillInputFormState extends State<PillInputForm> {
     Navigator.of(context).pop();
   }
 
-  Future<void> _deleteData(name) async {
-    await _deletePillsForUser(widget.deviceId, name);
-    await widget.onRefresh();
-    // ignore: use_build_context_synchronously
-    Navigator.of(context).pop();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -340,16 +333,6 @@ class _PillInputFormState extends State<PillInputForm> {
                           style: const TextStyle(color: Colors.white),
                         ),
                       ),
-                      if (widget.inputType == 'Modify')
-                        TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.black45),
-                          onPressed: () => _deleteData(widget.pill?.name),
-                          child: const Text(
-                            "삭제하기",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
                     ],
                   ),
                 ),

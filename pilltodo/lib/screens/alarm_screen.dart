@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pilltodo/model/device.dart';
+import 'package:pilltodo/screens/test_screen.dart';
 import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/add_card.dart';
 import 'package:pilltodo/widgets/pill_card.dart';
@@ -70,6 +71,27 @@ class _AlarmScreenState extends State<AlarmScreen> {
                     ),
                     const SizedBox(
                       height: 20,
+                    ),
+                    FutureBuilder<List<Pill>>(
+                      future: _pillsFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        } else {
+                          final pillData = snapshot.data ?? [];
+                          return pillData.isNotEmpty
+                              ? SwiperPage(
+                                  pills: pillData,
+                                  onRefresh: () => _refreshPills(context),
+                                )
+                              : Center(child: Text('등록 하슈'));
+                        }
+                      },
                     ),
                     FutureBuilder<List<Pill>>(
                       future: _pillsFuture,
