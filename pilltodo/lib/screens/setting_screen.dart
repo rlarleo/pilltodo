@@ -31,7 +31,7 @@ class _SettingScreenState extends State<SettingScreen> {
     String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
 
     return Scaffold(
-      backgroundColor: Colors.brown,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(

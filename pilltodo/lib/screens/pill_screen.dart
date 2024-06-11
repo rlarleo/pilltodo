@@ -95,7 +95,7 @@ class _PillScreenState extends State<PillScreen> {
   Widget _buildPillList(List<DateTimeCheck> pills) {
     return Scaffold(
       body: Container(
-        color: const Color.fromARGB(255, 221, 186, 173),
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: CustomScrollView(
           slivers: <Widget>[
             SliverToBoxAdapter(
@@ -209,7 +209,7 @@ class _PillScreenState extends State<PillScreen> {
           onTap: onTap,
           child: CircleAvatar(
             backgroundColor:
-                isSelected ? Colors.amber : Colors.amber.withOpacity(0.1),
+                isSelected ? Colors.blueGrey : Colors.blueGrey.withOpacity(0.2),
             radius: 32.0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

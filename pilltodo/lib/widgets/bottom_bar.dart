@@ -34,37 +34,36 @@ class BottomBar extends StatelessWidget {
       itemLabelStyle: const TextStyle(fontSize: 10),
 
       elevation: 1,
-      bottomBarItems: const [
+      bottomBarItems: [
         BottomBarItem(
-          inActiveItem: Icon(
+          inActiveItem: const Icon(
             Custom_Icons.add_alarm,
             color: Colors.blueGrey,
           ),
           activeItem: Icon(
             Custom_Icons.add_alarm,
-            color: Colors.brown,
+            color: Theme.of(context).primaryColor,
           ),
         ),
         BottomBarItem(
-          inActiveItem: Icon(Custom_Icons.pills, color: Colors.blueGrey),
+          inActiveItem: const Icon(Custom_Icons.pills, color: Colors.blueGrey),
           activeItem: Icon(
             Custom_Icons.pills,
-            color: Colors.brown,
+            color: Theme.of(context).primaryColor,
           ),
         ),
         BottomBarItem(
-          inActiveItem: Icon(
+          inActiveItem: const Icon(
             Icons.settings,
             color: Colors.blueGrey,
           ),
           activeItem: Icon(
             Icons.settings,
-            color: Colors.brown,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ],
       onTap: (index) {
-        // log('current selected index $index');
         _pageController.jumpToPage(index);
       },
       kIconSize: 24.0,

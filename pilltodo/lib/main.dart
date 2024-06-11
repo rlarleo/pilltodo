@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Animated Notch Bottom Bar',
       theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 197, 177),
+        primaryColor: Colors.brown,
+        cardColor: Colors.white,
         primarySwatch: Colors.blue,
       ),
       home: ChangeNotifierProvider<DeviceProvider>(

@@ -37,7 +37,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
           final user = snapshot.data;
 
           return Scaffold(
-            backgroundColor: Colors.brown,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Padding(
@@ -84,7 +84,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
                         } else {
                           final pillData = snapshot.data ?? [];
 
-                          // AddCard는 고정된 위치에 추가
                           pillData.add(
                             Pill(
                               name: '_addCard',
@@ -100,10 +99,8 @@ class _AlarmScreenState extends State<AlarmScreen> {
                               (a, b) => a.startDate.compareTo(b.startDate));
 
                           return ListView.builder(
-                            shrinkWrap:
-                                true, // ScrollView 안에 ListView를 사용할 때 필요
-                            physics:
-                                const NeverScrollableScrollPhysics(), // 내부 스크롤 비활성화
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: pillData.length,
                             itemBuilder: (context, index) {
                               final pill = pillData[index];

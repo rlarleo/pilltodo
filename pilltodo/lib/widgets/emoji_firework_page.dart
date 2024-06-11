@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pilltodo/main.dart';
 import 'package:pilltodo/screens/pill_screen.dart';
+import 'package:pilltodo/widgets/button.dart';
 import 'package:pilltodo/widgets/emoji_firework_widget.dart';
 
 class EmojiFireworkPage extends StatefulWidget {
@@ -93,11 +94,8 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
           SafeArea(
             child: Column(
               children: [
-                // 카드.
                 _cards(),
-
-                // 구매 버튼.
-                _paymentButton(),
+                _okButton(),
               ],
             ),
           ),
@@ -193,33 +191,25 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
         ));
   }
 
-  // 구매 버튼.
-  Container _paymentButton() {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 20) +
-          const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: Center(
-        child: TextButton(
-          style: TextButton.styleFrom(backgroundColor: Colors.black45),
-          onPressed: () {
-            Navigator.of(context).push(
-              PageRouteBuilder(
-                opaque: false,
-                transitionDuration: const Duration(milliseconds: 200),
-                reverseTransitionDuration: const Duration(milliseconds: 200),
-                pageBuilder: (context, animation, secondaryAnimation) {
-                  return const MyApp();
-                },
-              ),
-            );
-          },
-          child: const Text(
-            "확인",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
+  Padding _okButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Button(
+        text: '확인',
+        bgColor: Colors.black45,
+        textColor: Colors.white,
+        onPressed: () {
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              opaque: false,
+              transitionDuration: const Duration(milliseconds: 200),
+              reverseTransitionDuration: const Duration(milliseconds: 200),
+              pageBuilder: (context, animation, secondaryAnimation) {
+                return const MyApp();
+              },
+            ),
+          );
+        },
       ),
     );
   }

@@ -31,7 +31,6 @@ class _AddCardState extends State<AddCard> {
   @override
   Widget build(BuildContext context) {
     String? deviceId = Provider.of<DeviceProvider>(context).deviceId;
-
     return Transform.scale(
       scale: _isPressed ? 1.05 : 1,
       child: Transform.translate(

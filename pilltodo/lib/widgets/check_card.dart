@@ -31,7 +31,7 @@ class CheckCard extends StatelessWidget {
             ),
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
-              color: Colors.brown,
+              color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(25),
             ),
             child: Padding(
