@@ -251,61 +251,86 @@ class _PillInputFormState extends State<PillInputForm> {
                         child: ListView.builder(
                           itemCount: _times.length,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: const Color.fromARGB(
-                                            115, 16, 117, 19),
+                            return Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    115, 16, 117, 19),
+                                          ),
+                                          onPressed: () =>
+                                              showTimePicker(index),
+                                          child: Text(
+                                            _getFormattedTime(
+                                                _times[index].hour,
+                                                _times[index].minute),
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                        ),
                                       ),
-                                      onPressed: () => showTimePicker(index),
-                                      child: Text(
-                                        _getFormattedTime(_times[index].hour,
-                                            _times[index].minute),
-                                        style: const TextStyle(
-                                            color: Colors.white),
+                                      IconButton(
+                                        icon: const Icon(Custom_Icons.cancel),
+                                        color: Colors.red,
+                                        onPressed: () {
+                                          setState(() {
+                                            _times.removeAt(index);
+                                          });
+                                        },
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                  IconButton(
-                                    icon: const Icon(Custom_Icons.cancel),
-                                    color: Colors.red,
-                                    onPressed: () {
-                                      setState(() {
-                                        _times.removeAt(index);
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
+                                ),
+                                index == _times.length - 1
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextButton(
+                                                style: TextButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.black45),
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                    showPicker(
+                                                      iosStylePicker: true,
+                                                      context: context,
+                                                      value: _time,
+                                                      sunrise: const TimeOfDay(
+                                                          hour: 6,
+                                                          minute:
+                                                              0), // optional
+                                                      sunset: const TimeOfDay(
+                                                          hour: 18,
+                                                          minute:
+                                                              0), // optional
+                                                      duskSpanInMinutes:
+                                                          120, // optional
+                                                      onChange: addTime,
+                                                    ),
+                                                  );
+                                                },
+                                                child: const Text(
+                                                  "시간 추가",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                              ],
                             );
                           },
-                        ),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.black45),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            showPicker(
-                              iosStylePicker: true,
-                              context: context,
-                              value: _time,
-                              sunrise: const TimeOfDay(
-                                  hour: 6, minute: 0), // optional
-                              sunset: const TimeOfDay(
-                                  hour: 18, minute: 0), // optional
-                              duskSpanInMinutes: 120, // optional
-                              onChange: addTime,
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          "시간 추가",
-                          style: TextStyle(color: Colors.white),
                         ),
                       ),
                       TextButton(
