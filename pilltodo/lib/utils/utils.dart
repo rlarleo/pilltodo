@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -166,4 +167,20 @@ IconData? getOkButtonIcon(bool isNext) {
 
 VoidCallback? getOkButtonPressHandler(bool isNext) {
   return isNext ? handleOkButtonPress : null;
+}
+
+int compareTime(Time a, Time b) {
+  if (a.hour < b.hour) {
+    return -1;
+  } else if (a.hour > b.hour) {
+    return 1;
+  } else {
+    if (a.minute < b.minute) {
+      return -1;
+    } else if (a.minute > b.minute) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 }

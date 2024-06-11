@@ -66,7 +66,7 @@ class _ExampleCardState extends State<ExampleCard> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Color.fromARGB(216, 0, 0, 0),
+        color: const Color.fromARGB(216, 0, 0, 0),
         boxShadow: [
           BoxShadow(
             color: CupertinoColors.systemGrey.withOpacity(0.2),
@@ -134,44 +134,41 @@ class _ExampleCardState extends State<ExampleCard> {
                         fontSize: 15,
                       ),
                     ),
-                    Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => {
-                              AwesomeDialog(
-                                context: context,
-                                animType: AnimType.scale,
-                                headerAnimationLoop: false,
-                                dialogType: DialogType.success,
-                                showCloseIcon: true,
-                                body: PillInputForm(
-                                  isNext: _isNext,
-                                  onChanged: (bool newValue) {
-                                    setState(() {
-                                      _isNext = newValue;
-                                    });
-                                  },
-                                  onRefresh: widget.onRefresh,
-                                  deviceId: deviceId,
-                                  pill: widget.pill,
-                                  inputType: 'Modify',
-                                ),
-                                onDismissCallback: (type) {
-                                  _isNext = false;
-                                  debugPrint(
-                                      'Dialog Dismiss from callback $type');
-                                },
-                              ).show()
+                    Row(children: [
+                      ElevatedButton(
+                        onPressed: () => {
+                          AwesomeDialog(
+                            context: context,
+                            animType: AnimType.scale,
+                            headerAnimationLoop: false,
+                            dialogType: DialogType.success,
+                            showCloseIcon: true,
+                            body: PillInputForm(
+                              isNext: _isNext,
+                              onChanged: (bool newValue) {
+                                setState(() {
+                                  _isNext = newValue;
+                                });
+                              },
+                              onRefresh: widget.onRefresh,
+                              deviceId: deviceId,
+                              pill: widget.pill,
+                              inputType: 'Modify',
+                            ),
+                            onDismissCallback: (type) {
+                              _isNext = false;
+                              debugPrint('Dialog Dismiss from callback $type');
                             },
-                            child: const Text('수정'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () =>
-                                _deleteData(deviceId, widget.pill.name),
-                            child: const Text('삭제'),
-                          ),
-                        ]),
+                          ).show()
+                        },
+                        child: const Text('수정'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () =>
+                            _deleteData(deviceId, widget.pill.name),
+                        child: const Text('삭제'),
+                      ),
+                    ]),
                   ],
                 ),
               ],

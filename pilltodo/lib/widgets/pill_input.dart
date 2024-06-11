@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:pilltodo/icons/custom_icons.dart';
 import 'package:pilltodo/model/device.dart';
+import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/button.dart';
 
 class PillInputForm extends StatefulWidget {
@@ -81,13 +82,15 @@ class _PillInputFormState extends State<PillInputForm> {
 
   void addTime(Time newTime) {
     setState(() {
-      _times.add(newTime); // 새로운 시간 추가
+      _times.add(newTime);
+      _times.sort((a, b) => compareTime(a, b));
     });
   }
 
   void onTimeChanged(int index, Time newTime) {
     setState(() {
       _times[index] = newTime;
+      _times.sort((a, b) => compareTime(a, b));
     });
   }
 
@@ -275,14 +278,27 @@ class _PillInputFormState extends State<PillInputForm> {
                                           ),
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: const Icon(Custom_Icons.cancel),
-                                        color: Colors.red,
+                                      TextButton(
                                         onPressed: () {
                                           setState(() {
                                             _times.removeAt(index);
                                           });
                                         },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          minimumSize: Size.zero, // 최소 크기 설정
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8,
+                                              horizontal: 8), // 좌우 마진 설정
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                18), // 버튼을 더 네모지게 만듭니다.
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                          Icons.close,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ],
                                   ),
