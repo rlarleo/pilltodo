@@ -45,15 +45,12 @@ class _PillScreenState extends State<PillScreen> {
         userSnapshot.data() as Map<String, dynamic>?;
 
     if (userSnapshot.exists) {
-      // 'pills' 필드가 있는지 확인
       if (userData != null && userData.containsKey('pills')) {
         List<dynamic> pills = List<dynamic>.from(userData['pills']);
-        // 해당 약을 찾아서 업데이트
         for (int i = 0; i < pills.length; i++) {
           if (pills[i]['name'] == pillName) {
             List<dynamic> dateTimes = List<dynamic>.from(pills[i]['dateTimes']);
 
-            // dateTimes 배열의 해당 항목의 'checked' 값을 업데이트
             for (int j = 0; j < dateTimes.length; j++) {
               DateTime currentDateTime =
                   (dateTimes[j]['dateTime'] as Timestamp).toDate();
@@ -62,10 +59,8 @@ class _PillScreenState extends State<PillScreen> {
               }
             }
 
-            // 업데이트된 dateTimes를 pills 리스트에 할당
             pills[i]['dateTimes'] = dateTimes;
 
-            // Firestore에 업데이트된 데이터 저장
             await userRef.update({'pills': pills}).then((_) {
               // 업데이트 성공
               print('Firestore 업데이트 성공');
