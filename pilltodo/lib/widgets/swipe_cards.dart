@@ -32,7 +32,6 @@ class SwipeCardsState extends State<SwipeCards> {
 
   @override
   void dispose() {
-    print('dispose');
     isDisposed = true;
     controller.dispose();
     super.dispose();

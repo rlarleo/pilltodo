@@ -7,6 +7,7 @@ import 'package:pilltodo/icons/custom_icons.dart';
 import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/button.dart';
+import 'package:toastification/toastification.dart';
 
 class PillInputForm extends StatefulWidget {
   final bool isNext;
@@ -34,7 +35,6 @@ class _PillInputFormState extends State<PillInputForm> {
   late DateTime _startDate;
   late DateTime _endDate;
   late bool _isNext;
-  final DateFormat _dateFormat = DateFormat('yyyy.MM.dd');
   final Time _time = Time(hour: 11, minute: 30);
   List<bool> _selectedDays = [true, true, true, true, true, true, true];
   List<Time> _times = [
@@ -81,10 +81,15 @@ class _PillInputFormState extends State<PillInputForm> {
   }
 
   void addTime(Time newTime) {
-    setState(() {
-      _times.add(newTime);
-      _times.sort((a, b) => compareTime(a, b));
-    });
+    bool containsTime = _times.contains(newTime);
+    if (containsTime) {
+      showToast(ToastificationType.warning, '중복된 시간은 넣을 수 없습니다.');
+    } else {
+      setState(() {
+        _times.add(newTime);
+        _times.sort((a, b) => compareTime(a, b));
+      });
+    }
   }
 
   void onTimeChanged(int index, Time newTime) {
@@ -216,6 +221,7 @@ class _PillInputFormState extends State<PillInputForm> {
     await _deletePillsForUser(widget.deviceId, name);
     await _insertPillsForUser(widget.deviceId);
     await widget.onRefresh();
+    showToast(ToastificationType.success, '수정에 성공했습니다.');
     // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }
@@ -280,9 +286,15 @@ class _PillInputFormState extends State<PillInputForm> {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          setState(() {
-                                            _times.removeAt(index);
-                                          });
+                                          if (_times.length == 1) {
+                                            showToast(
+                                                ToastificationType.warning,
+                                                '모든 알림을 삭제할 수 없습니다.');
+                                          } else {
+                                            setState(() {
+                                              _times.removeAt(index);
+                                            });
+                                          }
                                         },
                                         style: TextButton.styleFrom(
                                           backgroundColor: Colors.red,
@@ -421,12 +433,12 @@ class _PillInputFormState extends State<PillInputForm> {
                       ElevatedButton(
                         onPressed: _selectDateRange,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.calendar_month), // 아이콘 추가
-                            const SizedBox(width: 5), // 아이콘과 텍스트 사이의 간격 조정
+                            const Icon(Icons.calendar_month),
+                            const SizedBox(width: 5),
                             Text(
-                              '${_dateFormat.format(_startDate)} - ${_dateFormat.format(_endDate)}',
+                              '${dateFormat.format(_startDate)} - ${dateFormat.format(_endDate)}',
                               style: const TextStyle(
                                   fontSize: 16), // 텍스트 스타일 조정 가능
                             ),
@@ -499,10 +511,14 @@ class _PillInputFormState extends State<PillInputForm> {
                   bgColor: const Color.fromARGB(255, 0, 104, 148),
                   textColor: Colors.white,
                   onPressed: () {
-                    setState(() {
-                      _isNext = true;
-                    });
-                    widget.onChanged(true);
+                    if (_pillNameController.text == "") {
+                      showToast(ToastificationType.warning, '약 이름을 입력해주세요.');
+                    } else {
+                      setState(() {
+                        _isNext = true;
+                      });
+                      widget.onChanged(true);
+                    }
                   },
                 ),
               ),

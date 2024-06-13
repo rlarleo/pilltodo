@@ -10,6 +10,7 @@ import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/bottom_bar.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,16 +25,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Animated Notch Bottom Bar',
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 197, 177),
-        primaryColor: Colors.brown,
-        cardColor: Colors.white,
-        primarySwatch: Colors.blue,
+    return ToastificationWrapper(
+      child: MaterialApp(
+        title: 'Animated Notch Bottom Bar',
+        theme: ThemeData(
+          scaffoldBackgroundColor: const Color.fromARGB(255, 255, 197, 177),
+          primaryColor: Colors.brown,
+          cardColor: Colors.white,
+          primarySwatch: Colors.blue,
+        ),
+        home: ChangeNotifierProvider<DeviceProvider>(
+            create: (context) => DeviceProvider(), child: const MyHomePage()),
       ),
-      home: ChangeNotifierProvider<DeviceProvider>(
-          create: (context) => DeviceProvider(), child: const MyHomePage()),
     );
   }
 }

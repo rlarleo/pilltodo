@@ -5,10 +5,14 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
 import 'package:pilltodo/screens/first_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
+
+final DateFormat dateFormat = DateFormat('yyyy.MM.dd');
 
 Future<User?> getUser(BuildContext context) async {
   String? deviceId =
@@ -88,11 +92,9 @@ Future<List<DateTimeCheck>> getAlarms(
         print(pill.endDate);
         print(pill.endDate);
         if (today.isAfter(pill.startDate) && today.isBefore(pill.endDate)) {
-          print('hi');
           for (var dateTimeCheck in pill.dateTimes) {
             if (dateTimeCheck.dateTime.isAfter(todayStart) &&
                 dateTimeCheck.dateTime.isBefore(todayEnd)) {
-              print('hi');
               dateTimeCheck.name = pill.name;
               allDateTimeChecks.add(dateTimeCheck);
             }
@@ -182,4 +184,17 @@ int compareTime(Time a, Time b) {
       return 0;
     }
   }
+}
+
+void showToast(ToastificationType type, String title) {
+  toastification.show(
+    type: type, //
+    style: ToastificationStyle
+        .flatColored, // flat, fillColored, flatColored, minimal
+    title: Text(title),
+    // description: RichText(text: TextSpan(text: description)),
+    alignment: Alignment.topLeft,
+
+    autoCloseDuration: const Duration(seconds: 3),
+  );
 }

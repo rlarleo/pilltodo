@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
+import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/pill_input.dart';
 import 'package:provider/provider.dart';
 
@@ -116,22 +117,22 @@ class _SwipeCardState extends State<SwipeCard> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Text(
-                      widget.pill.startDate.toString(),
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
+                    Row(children: [
+                      const Icon(
+                        Icons.calendar_month,
+                        color: Colors.blueGrey,
                       ),
-                    ),
+                      const SizedBox(width: 5),
+                      Text(
+                        '${dateFormat.format(widget.pill.startDate)} - ${dateFormat.format(widget.pill.endDate)}',
+                        style: const TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ]),
                     const SizedBox(
                       height: 5,
-                    ),
-                    Text(
-                      widget.pill.startDate.toString(),
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                      ),
                     ),
                     Row(children: [
                       ElevatedButton(
