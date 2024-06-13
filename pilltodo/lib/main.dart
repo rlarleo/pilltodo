@@ -25,18 +25,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ToastificationWrapper(
-      child: MaterialApp(
-        title: 'Animated Notch Bottom Bar',
-        theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromARGB(255, 255, 197, 177),
-          primaryColor: Colors.brown,
-          cardColor: Colors.white,
-          primarySwatch: Colors.blue,
-        ),
-        home: ChangeNotifierProvider<DeviceProvider>(
-            create: (context) => DeviceProvider(), child: const MyHomePage()),
+    return MaterialApp(
+      title: 'Animated Notch Bottom Bar',
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 197, 177),
+        primaryColor: Colors.brown,
+        cardColor: Colors.white,
+        primarySwatch: Colors.blue,
       ),
+      home: ChangeNotifierProvider<DeviceProvider>(
+          create: (context) => DeviceProvider(), child: const MyHomePage()),
     );
   }
 }

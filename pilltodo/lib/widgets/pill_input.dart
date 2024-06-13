@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
@@ -83,7 +85,7 @@ class _PillInputFormState extends State<PillInputForm> {
   void addTime(Time newTime) {
     bool containsTime = _times.contains(newTime);
     if (containsTime) {
-      showToast(ToastificationType.warning, '중복된 시간은 넣을 수 없습니다.');
+      showToast(context, ToastificationType.warning, '중복된 시간은 넣을 수 없습니다.');
     } else {
       setState(() {
         _times.add(newTime);
@@ -221,15 +223,13 @@ class _PillInputFormState extends State<PillInputForm> {
     await _deletePillsForUser(widget.deviceId, name);
     await _insertPillsForUser(widget.deviceId);
     await widget.onRefresh();
-    showToast(ToastificationType.success, '수정에 성공했습니다.');
-    // ignore: use_build_context_synchronously
+    showToast(context, ToastificationType.success, '수정에 성공했습니다.');
     Navigator.of(context).pop();
   }
 
   Future<void> _insertData() async {
     await _insertPillsForUser(widget.deviceId);
     await widget.onRefresh();
-    // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }
 
@@ -288,6 +288,7 @@ class _PillInputFormState extends State<PillInputForm> {
                                         onPressed: () {
                                           if (_times.length == 1) {
                                             showToast(
+                                                context,
                                                 ToastificationType.warning,
                                                 '모든 알림을 삭제할 수 없습니다.');
                                           } else {
@@ -512,7 +513,8 @@ class _PillInputFormState extends State<PillInputForm> {
                   textColor: Colors.white,
                   onPressed: () {
                     if (_pillNameController.text == "") {
-                      showToast(ToastificationType.warning, '약 이름을 입력해주세요.');
+                      showToast(
+                          context, ToastificationType.warning, '약 이름을 입력해주세요.');
                     } else {
                       setState(() {
                         _isNext = true;

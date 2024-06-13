@@ -186,8 +186,9 @@ int compareTime(Time a, Time b) {
   }
 }
 
-void showToast(ToastificationType type, String title) {
+void showToast(BuildContext context, ToastificationType type, String title) {
   toastification.show(
+    context: context,
     type: type, //
     style: ToastificationStyle
         .flatColored, // flat, fillColored, flatColored, minimal
