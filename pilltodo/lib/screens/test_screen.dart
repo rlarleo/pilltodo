@@ -20,6 +20,7 @@ class SwiperPage extends StatefulWidget {
 
 class _ExamplePageState extends State<SwiperPage> {
   final AppinioSwiperController controller = AppinioSwiperController();
+  bool isDisposed = false;
 
   @override
   void initState() {
@@ -30,47 +31,57 @@ class _ExamplePageState extends State<SwiperPage> {
   }
 
   @override
+  void dispose() {
+    print('dispose');
+    isDisposed = true;
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Material(
       child: CupertinoPageScaffold(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .45,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 25,
-                  right: 25,
-                  top: 50,
-                  bottom: 40,
-                ),
-                child: AppinioSwiper(
-                  invertAngleOnBottomDrag: true,
-                  backgroundCardCount:
-                      widget.pills.length > 2 ? 2 : widget.pills.length - 1,
-                  swipeOptions: const SwipeOptions.all(),
-                  controller: controller,
-                  onCardPositionChanged: (
-                    SwiperPosition position,
-                  ) {},
-                  onSwipeEnd: _swipeEnd,
-                  onEnd: _onEnd,
-                  cardCount: widget.pills.length,
-                  cardBuilder: (BuildContext context, int index) {
-                    return ExampleCard(
-                      pill: widget.pills[index],
-                      onRefresh: widget.onRefresh,
-                    );
-                  },
-                  loop: true,
+        child: Stack(children: [
+          Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .45,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 25,
+                    right: 25,
+                    top: 50,
+                    bottom: 40,
+                  ),
+                  child: AppinioSwiper(
+                    invertAngleOnBottomDrag: true,
+                    backgroundCardCount:
+                        widget.pills.length > 2 ? 2 : widget.pills.length - 1,
+                    swipeOptions: const SwipeOptions.all(),
+                    controller: controller,
+                    onCardPositionChanged: (
+                      SwiperPosition position,
+                    ) {},
+                    onSwipeEnd: _swipeEnd,
+                    onEnd: _onEnd,
+                    cardCount: widget.pills.length,
+                    cardBuilder: (BuildContext context, int index) {
+                      return ExampleCard(
+                        pill: widget.pills[index],
+                        onRefresh: widget.onRefresh,
+                      );
+                    },
+                    loop: true,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ]),
       ),
     );
   }
@@ -99,27 +110,30 @@ class _ExamplePageState extends State<SwiperPage> {
     print('end reached!');
   }
 
-  // Animates the card back and forth to teach the user that it is swipable.
   Future<void> _shakeCard() async {
     const double distance = 30;
-    // We can animate back and forth by chaining different animations.
-    await controller.animateTo(
-      const Offset(-distance, 0),
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-    );
-    await controller.animateTo(
-      const Offset(distance, 0),
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-    );
-    // We need to animate back to the center because `animateTo` does not center
-    // the card for us.
-    await controller.animateTo(
-      const Offset(0, 0),
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeInOut,
-    );
+    try {
+      if (isDisposed) return Future<void>(() {});
+      await controller.animateTo(
+        const Offset(-distance, 0),
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+      if (isDisposed) return Future<void>(() {});
+      await controller.animateTo(
+        const Offset(distance, 0),
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+      if (isDisposed) return Future<void>(() {});
+      await controller.animateTo(
+        const Offset(0, 0),
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+    } catch (e) {
+      return Future<void>(() {});
+    }
   }
 }
 

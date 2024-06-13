@@ -89,64 +89,19 @@ class _AlarmScreenState extends State<AlarmScreen> {
                                   pills: pillData,
                                   onRefresh: () => _refreshPills(context),
                                 )
-                              : Center(child: Text('등록 하슈'));
+                              : const Center(child: Text('등록 하슈'));
                         }
                       },
                     ),
-                    FutureBuilder<List<Pill>>(
-                      future: _pillsFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
-                        } else {
-                          final pillData = snapshot.data ?? [];
-
-                          pillData.add(
-                            Pill(
-                              name: '_addCard',
-                              dateTimes: [],
-                              startDate: DateTime.now(),
-                              endDate: DateTime.now(),
-                              selectedDays: [],
-                              times: [],
-                            ),
-                          );
-                          pillData.sort((a, b) => a.name.compareTo(b.name));
-                          pillData.sort(
-                              (a, b) => a.startDate.compareTo(b.startDate));
-
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: pillData.length,
-                            itemBuilder: (context, index) {
-                              final pill = pillData[index];
-                              if (pill.name == '_addCard') {
-                                return AddCard(
-                                  pillName: 'test',
-                                  icon: Icons.add_circle_outline_rounded,
-                                  isInverted: index % 2 == 0,
-                                  index: index.toDouble(),
-                                  onRefresh: () => _refreshPills(context),
-                                );
-                              } else {
-                                return PillCard(
-                                  pill: pill,
-                                  icon: Icons.notifications_off_outlined,
-                                  isInverted: index % 2 == 0,
-                                  index: index.toDouble(),
-                                  onRefresh: () => _refreshPills(context),
-                                );
-                              }
-                            },
-                          );
-                        }
-                      },
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    AddCard(
+                      pillName: 'test',
+                      icon: Icons.add_circle_outline_rounded,
+                      isInverted: true,
+                      index: 1,
+                      onRefresh: () => _refreshPills(context),
                     ),
                     const SizedBox(
                       height: 100,
