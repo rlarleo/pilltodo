@@ -4,25 +4,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/provider/device_provider.dart';
-import 'package:pilltodo/screens/test_screen.dart';
 import 'package:pilltodo/widgets/pill_input.dart';
 import 'package:provider/provider.dart';
 
-class ExampleCard extends StatefulWidget {
+class SwipeCard extends StatefulWidget {
   final Pill pill;
   final Future<void> Function() onRefresh;
 
-  const ExampleCard({
+  const SwipeCard({
     super.key,
     required this.pill,
     required this.onRefresh,
   });
 
   @override
-  State<ExampleCard> createState() => _ExampleCardState();
+  State<SwipeCard> createState() => _SwipeCardState();
 }
 
-class _ExampleCardState extends State<ExampleCard> {
+class _SwipeCardState extends State<SwipeCard> {
   bool _isNext = false;
 
   Future<void> _deletePillsForUser(String? deviceId, String? name) async {

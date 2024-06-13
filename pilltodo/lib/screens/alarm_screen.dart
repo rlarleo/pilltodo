@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pilltodo/model/device.dart';
-import 'package:pilltodo/screens/test_screen.dart';
+import 'package:pilltodo/widgets/swipe_cards.dart';
 import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/add_card.dart';
-import 'package:pilltodo/widgets/pill_card.dart';
 
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({super.key});
@@ -85,7 +84,7 @@ class _AlarmScreenState extends State<AlarmScreen> {
                         } else {
                           final pillData = snapshot.data ?? [];
                           return pillData.isNotEmpty
-                              ? SwiperPage(
+                              ? SwipeCards(
                                   pills: pillData,
                                   onRefresh: () => _refreshPills(context),
                                 )

@@ -2,23 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:pilltodo/model/device.dart';
-import 'package:pilltodo/widgets/example_card.dart';
+import 'package:pilltodo/widgets/swipe_card.dart';
 
-class SwiperPage extends StatefulWidget {
+class SwipeCards extends StatefulWidget {
   final List<Pill> pills;
   final Future<void> Function() onRefresh;
 
-  const SwiperPage({
+  const SwipeCards({
     super.key,
     required this.pills,
     required this.onRefresh,
   });
 
   @override
-  State<SwiperPage> createState() => _ExamplePageState();
+  State<SwipeCards> createState() => SwipeCardsState();
 }
 
-class _ExamplePageState extends State<SwiperPage> {
+class SwipeCardsState extends State<SwipeCards> {
   final AppinioSwiperController controller = AppinioSwiperController();
   bool isDisposed = false;
 
@@ -70,7 +70,7 @@ class _ExamplePageState extends State<SwiperPage> {
                     onEnd: _onEnd,
                     cardCount: widget.pills.length,
                     cardBuilder: (BuildContext context, int index) {
-                      return ExampleCard(
+                      return SwipeCard(
                         pill: widget.pills[index],
                         onRefresh: widget.onRefresh,
                       );
