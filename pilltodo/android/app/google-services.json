@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:899915765545:android:6644a62f9509e6ba09c938",
         "android_client_info": {
-          "package_name": "com.example.pilltodo"
+          "package_name": "pilltodo.flutter_app"
         }
       },
       "oauth_client": [],
