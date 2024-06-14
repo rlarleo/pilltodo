@@ -90,7 +90,6 @@ class SwipeCardsState extends State<SwipeCards> {
       case Swipe():
         print('The card was swiped to the : ${activity.direction}');
         print('previous index: $previousIndex, target index: $targetIndex');
-        print(widget.pills);
         break;
       case Unswipe():
         print('A ${activity.direction.name} swipe was undone.');

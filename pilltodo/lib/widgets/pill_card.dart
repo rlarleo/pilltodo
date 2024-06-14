@@ -74,7 +74,6 @@ class _PillCardState extends State<PillCard> {
               ),
               onDismissCallback: (type) {
                 _isNext = false;
-                debugPrint('Dialog Dismiss from callback $type');
               },
             ).show();
           },

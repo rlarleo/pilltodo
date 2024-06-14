@@ -60,8 +60,6 @@ Future<List<Pill>> getPills(BuildContext context) async {
 
 Future<List<DateTimeCheck>> getAlarms(
     String? deviceId, DateTime selectedDate) async {
-  print(deviceId);
-
   if (deviceId != null) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     DocumentReference userRef = firestore.collection('user').doc(deviceId);
@@ -85,12 +83,6 @@ Future<List<DateTimeCheck>> getAlarms(
 
       for (var pillData in pillDataList) {
         var pill = Pill.fromMap(pillData as Map<String, dynamic>);
-        print('hi');
-        print(pill.startDate);
-        print(pill.endDate);
-        print(pill.endDate);
-        print(pill.endDate);
-        print(pill.endDate);
         if (today.isAfter(pill.startDate) && today.isBefore(pill.endDate)) {
           for (var dateTimeCheck in pill.dateTimes) {
             if (dateTimeCheck.dateTime.isAfter(todayStart) &&
@@ -156,18 +148,6 @@ Future<String> getDeviceUniqueId() async {
   }
 
   return deviceIdentifier;
-}
-
-void handleOkButtonPress() {
-  debugPrint('OnClick');
-}
-
-IconData? getOkButtonIcon(bool isNext) {
-  return isNext ? Icons.check_circle : null;
-}
-
-VoidCallback? getOkButtonPressHandler(bool isNext) {
-  return isNext ? handleOkButtonPress : null;
 }
 
 int compareTime(Time a, Time b) {

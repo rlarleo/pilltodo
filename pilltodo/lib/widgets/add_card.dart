@@ -70,11 +70,8 @@ class _AddCardState extends State<AddCard> {
                 pill: null,
                 inputType: 'Add',
               ),
-              btnOkOnPress: getOkButtonPressHandler(_isNext),
-              btnOkIcon: getOkButtonIcon(_isNext),
               onDismissCallback: (type) {
                 _isNext = false;
-                debugPrint('Dialog Dismiss from callback $type');
               },
             ).show();
           },

@@ -62,13 +62,11 @@ class _PillScreenState extends State<PillScreen> {
             pills[i]['dateTimes'] = dateTimes;
 
             await userRef.update({'pills': pills}).then((_) {
-              // 업데이트 성공
               print('Firestore 업데이트 성공');
             }).catchError((error) {
-              // 업데이트 중 오류 발생
               print('Firestore 업데이트 오류: $error');
             });
-            break; // 약을 찾았으므로 루프 종료
+            break;
           }
         }
       }

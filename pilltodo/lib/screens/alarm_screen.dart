@@ -26,7 +26,6 @@ class _AlarmScreenState extends State<AlarmScreen> {
     setState(() {
       _pillsFuture = getPills(context);
     });
-    print('refersh');
   }
 
   @override
