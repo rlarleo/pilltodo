@@ -1,9 +1,7 @@
 import 'dart:ui';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pilltodo/main.dart';
-import 'package:pilltodo/screens/pill_screen.dart';
 import 'package:pilltodo/widgets/button.dart';
 import 'package:pilltodo/widgets/emoji_firework_widget.dart';
 
