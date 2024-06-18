@@ -26,7 +26,6 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
   static const double _cardHeight = 200;
 
   // 카드 애니메이션.
-  late AnimationController _cardRotateController;
   late AnimationController _cardBounceController;
 
   // 바운스 애니메이션.
@@ -34,14 +33,6 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
 
   // 카드 애니메이션 설정.
   void _setCardRotateAnimation() {
-    // 카드 회전 애니메이션.
-    _cardRotateController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2), // 속도를 빠르게 설정
-    )
-      ..addListener(() => setState(() {}))
-      ..repeat(reverse: true); // 반복하면서 방향을 반대로
-
     // 카드 바운스 애니메이션.
     _cardBounceController = AnimationController(
       vsync: this,
@@ -72,7 +63,6 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
 
   @override
   void dispose() {
-    _cardRotateController.dispose();
     _cardBounceController.dispose();
     super.dispose();
   }
@@ -129,17 +119,13 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
         children: [
           Hero(
             tag: widget.tag,
-            child: Transform.rotate(
-              angle: _cardRotateController.value *
-                  (math.pi / 15), // 각도를 조정하여 좌우 균형을 맞춤
-              child: Transform(
-                alignment: Alignment.topLeft,
-                transform: Matrix4.identity()
-                  // 회전.
-                  ..rotateX(_cardBounceController.value * (math.pi / 400))
-                  ..rotateY(_cardBounceController.value * (math.pi / 400)),
-                child: _giftCard(index: 0),
-              ),
+            child: Transform(
+              alignment: Alignment.topLeft,
+              transform: Matrix4.identity()
+                // 회전.
+                ..rotateX(_cardBounceController.value * (math.pi / 400))
+                ..rotateY(_cardBounceController.value * (math.pi / 400)),
+              child: _giftCard(index: 0),
             ),
           ),
         ],
@@ -181,7 +167,7 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
               right: 0, // 원하는 수평 위치
               child: Center(
                 child: Image.asset(
-                  'assets/images/heart-11534_256.gif',
+                  'assets/images/emoji5.gif',
                   width: 100,
                   height: 100,
                 ),
