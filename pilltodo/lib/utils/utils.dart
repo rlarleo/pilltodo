@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -178,4 +179,22 @@ void showToast(BuildContext context, ToastificationType type, String title) {
 
     autoCloseDuration: const Duration(seconds: 3),
   );
+}
+
+class SecondScreen extends StatelessWidget {
+  final RemoteMessage message;
+
+  const SecondScreen({super.key, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Message Details"),
+      ),
+      body: Center(
+        child: Text('Message data: ${message.data}'),
+      ),
+    );
+  }
 }
