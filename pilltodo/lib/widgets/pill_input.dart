@@ -1,11 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:pilltodo/icons/custom_icons.dart';
 import 'package:pilltodo/model/device.dart';
 import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/button.dart';

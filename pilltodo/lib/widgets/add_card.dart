@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:pilltodo/provider/device_provider.dart';
-import 'package:pilltodo/utils/utils.dart';
 import 'package:pilltodo/widgets/pill_input.dart';
 import 'package:provider/provider.dart';
 
