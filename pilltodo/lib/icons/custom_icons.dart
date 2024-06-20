@@ -33,6 +33,8 @@
 ///         License:   SIL (http://scripts.sil.org/OFL)
 ///         Homepage:  http://www.justbenicestudio.com/
 ///
+// ignore_for_file: camel_case_types, constant_identifier_names
+
 import 'package:flutter/widgets.dart';
 
 class Custom_Icons {
