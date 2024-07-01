@@ -82,7 +82,6 @@ class _SwipeCardState extends State<SwipeCard> {
           Flexible(
             child: Container(
               decoration: const BoxDecoration(
-                // gradient: candidate.color,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
