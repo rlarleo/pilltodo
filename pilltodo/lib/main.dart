@@ -54,17 +54,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _pageController = PageController(initialPage: 1);
-
+  final PageController _pageController = PageController(initialPage: 1);
   final NotchBottomBarController _controller =
       NotchBottomBarController(index: 1);
-
   int maxCount = 3;
 
   @override
   void initState() {
     super.initState();
 
+    // Firebase Messaging 설정
     FirebaseMessaging.instance.getToken().then((token) {
       print("FCM Token: $token");
     });
@@ -90,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     _pageController.dispose();
-
     super.dispose();
   }
 
@@ -103,17 +101,23 @@ class _MyHomePageState extends State<MyHomePage> {
       const PillScreen(),
       const SettingScreen(),
     ];
+
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: List.generate(
-            bottomBarPages.length, (index) => bottomBarPages[index]),
+        physics: const BouncingScrollPhysics(), // 스와이프 허용
+        onPageChanged: (index) {
+          setState(() {
+            _controller.index = index; // 페이지 변경 시 하단 바 상태 업데이트
+          });
+        },
+        children: bottomBarPages,
       ),
       extendBody: true,
-      bottomNavigationBar: (bottomBarPages.length <= maxCount)
-          ? BottomBar(controller: _controller, pageController: _pageController)
-          : null,
+      bottomNavigationBar: BottomBar(
+        controller: _controller,
+        pageController: _pageController,
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
     with TickerProviderStateMixin {
   EmojiFireWork emojiFireWork = EmojiFireWork(
       emojiAsset: const AssetImage('assets/images/heart_icon.png'));
+  late final String _randomEmojiAsset;
 
   // 카드 사이즈.
   static const double _cardWidth = 320;
@@ -40,6 +42,14 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
     )..addListener(() => setState(() {}));
   }
 
+  String _getRandomEmojiAsset() {
+    final random = Random();
+    final randomNumber = random.nextInt(6) + 1;
+    print(randomNumber);
+
+    return 'assets/images/emoji$randomNumber.gif';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +67,7 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
         emojiFireWork.addFireworkWidget(Offset.zero, 3.0);
       });
     });
+    _randomEmojiAsset = _getRandomEmojiAsset();
   }
 
   @override
@@ -165,7 +176,7 @@ class _EmojiFireworkPageState extends State<EmojiFireworkPage>
               right: 0, // 원하는 수평 위치
               child: Center(
                 child: Image.asset(
-                  'assets/images/emoji5.gif',
+                  _randomEmojiAsset,
                   width: 100,
                   height: 100,
                 ),

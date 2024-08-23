@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pilltodo/provider/device_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -13,6 +14,38 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   final TextEditingController _nameController = TextEditingController();
   String? _selectedGender;
+  Color _mainColor = Colors.blue;
+  Color _subColor = Colors.blue;
+
+  void _openColorPicker(bool isMainColor) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('색상을 선택해주세요.'),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor: isMainColor ? _mainColor : _subColor,
+              onColorChanged: (Color color) {
+                setState(() {
+                  isMainColor ? _mainColor : _subColor = color;
+                });
+              },
+              pickerAreaHeightPercent: 0.8,
+            ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('Got it'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> _updateUserData(String? deviceId) async {
     await FirebaseFirestore.instance.collection('user').doc(deviceId).update({
@@ -73,6 +106,14 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                   const Text('Female'),
                 ],
+              ),
+              ElevatedButton(
+                onPressed: () => _openColorPicker(true),
+                child: const Text('메인 색상'),
+              ),
+              ElevatedButton(
+                onPressed: () => _openColorPicker(false),
+                child: const Text('보조 색상'),
               ),
               ElevatedButton(
                 onPressed: () => _updateUserData(deviceId),

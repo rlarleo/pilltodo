@@ -16,7 +16,6 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedNotchBottomBar(
-      /// Provide NotchBottomBarController
       notchBottomBarController: _controller,
       color: Colors.white,
       showLabel: true,
@@ -24,15 +23,11 @@ class BottomBar extends StatelessWidget {
       maxLine: 1,
       shadowElevation: 5,
       kBottomRadius: 28.0,
-
-      /// restart app if you change removeMargins
       removeMargins: false,
       bottomBarWidth: 500,
       showShadow: false,
       durationInMilliSeconds: 300,
-
       itemLabelStyle: const TextStyle(fontSize: 10),
-
       elevation: 1,
       bottomBarItems: [
         BottomBarItem(
@@ -64,7 +59,11 @@ class BottomBar extends StatelessWidget {
         ),
       ],
       onTap: (index) {
-        _pageController.jumpToPage(index);
+        _pageController.animateToPage(
+          index,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
       },
       kIconSize: 24.0,
     );

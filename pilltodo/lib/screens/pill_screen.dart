@@ -121,41 +121,44 @@ class _PillScreenState extends State<PillScreen> {
                       setState(() {
                         pills[index].checked = !pills[index].checked;
                       });
+                      if (pill.checked) {
+                        Navigator.of(context)
+                            .push(
+                          PageRouteBuilder(
+                            opaque: false,
+                            transitionDuration:
+                                const Duration(milliseconds: 200),
+                            reverseTransitionDuration:
+                                const Duration(milliseconds: 200),
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return EmojiFireworkPage(
+                                colors:
+                                    const Color.fromARGB(255, 207, 107, 100),
+                                tag: index,
+                              );
+                            },
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              const begin = 0.0;
+                              const end = 1.0;
+                              const curve = Curves.ease;
+                              final tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
 
-                      Navigator.of(context)
-                          .push(
-                        PageRouteBuilder(
-                          opaque: false,
-                          transitionDuration: const Duration(milliseconds: 200),
-                          reverseTransitionDuration:
-                              const Duration(milliseconds: 200),
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) {
-                            return EmojiFireworkPage(
-                              colors: const Color.fromARGB(255, 207, 107, 100),
-                              tag: index,
-                            );
-                          },
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            const begin = 0.0;
-                            const end = 1.0;
-                            const curve = Curves.ease;
-                            final tween = Tween(begin: begin, end: end)
-                                .chain(CurveTween(curve: curve));
-
-                            return ScaleTransition(
-                              scale: animation.drive(tween),
-                              child: child,
-                            );
-                          },
-                        ),
-                      )
-                          .then((value) {
-                        setState(() {
-                          // setState를 호출하여 화면을 다시 그립니다.
+                              return ScaleTransition(
+                                scale: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                          ),
+                        )
+                            .then((value) {
+                          setState(() {
+                            // setState를 호출하여 화면을 다시 그립니다.
+                          });
                         });
-                      });
+                      }
                     },
                   );
                 },

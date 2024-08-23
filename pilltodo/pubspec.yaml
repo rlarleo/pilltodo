@@ -50,6 +50,7 @@ dependencies:
   toastification: ^2.0.0
   firebase_messaging: ^14.9.4
   googleapis_auth: ^1.6.0
+  flutter_colorpicker: ^1.1.0
 
 dev_dependencies:
   flutter_test:
